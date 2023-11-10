@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+{% block body %}
+        <!-- Page Header-->
+        <header class="masthead" style="background-image: url('{{url_for('static', filename='assets/img/home-bg.jpg')}}')">
+            <!-- <header class="masthead" style="background-image: url('{{url_for('static', filename='assets/img/home-bg.jpg')}} ')"></header> -->
+            <div class="container position-relative px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="site-heading">
+                            <!-- i am using the config.json file to get these values and using it here by jinjer templating -->
+                            <h1>{{params['website_name']}}</h1>
+                            <span class="subheading">Deploy your project</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- Main Content-->
+        <div class="container px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+
+                    <!-- Post preview-->
+                    <!--Todo: fetch it using for loop from the database-->
+                    <!-- variable "posts" is passed in def home() -->
+                    {% for post in posts %} <!--for loop in jinga-->
+                        <!-- <li><a href="/post/{{ post.slug }}">{{post.title}}</a> -->
+                        <div class="post-preview">
+                            <a href="/post/{{post.slug}}"> 
+                                <h2 class="post-title">{{post.title}}</h2>
+                                <h3 class="post-subtitle">{{post.tag_line}}</h3>
+                            </a>
+                            <p class="post-meta">
+                                Posted by
+                                <a href="#!">Start Bootstrap</a>
+                                on {{post.date}}
+                            </p>
+                        </div>
+                        {{post.content[0:150]}}...
+                    {% endfor %}
+
+
+                    
+                    <hr class="my-4" />
+                    <!-- Pager-->
+                    
+                    <!-- <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" href="#!">Older Posts →</a></div> -->
+                    <div class="d-flex justify-content-between mb-4">
+                        <div class="btn btn-primary text-uppercase"><a href="{{prev}}">← Previous</a></div>
+                        <div class="btn btn-primary text-uppercase"><a href="{{next}}">Older Posts →</a></div>
+                </div>
+            </div>
+        </div>
+{% endblock %}    
