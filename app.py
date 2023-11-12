@@ -204,8 +204,8 @@ def contact():
         msg = EmailMessage(
         "Message from DEPLOID",
         f"{name}\n{message}\n{phone}\n{email}",
-        {params['mail-user']},
-        [{params['mail-receiver']}]
+        params['mail-user'],
+        [params['mail-receiver']]
         )
         msg.send()
         # mail.send_message('New message from'+ name,
