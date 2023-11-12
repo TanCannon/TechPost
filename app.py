@@ -3,7 +3,8 @@ from flask import Flask, render_template , request, session, redirect
 from flask_sqlalchemy import SQLAlchemy
 import json
 from datetime import datetime #ill use this to pass current date in the form
-from flask_mail import Mail #using to send email notification//////
+# from flask_mail import Mail #using to send email notification//////
+from flask_mailman import Mail, EmailMessage #using to send email notification
 import os 
 from werkzeug.utils import secure_filename
 import math
@@ -17,7 +18,14 @@ app = Flask(__name__)
 app.secret_key = 'supersecretkey' #kuch bhi rakh skte ho
 app.config['UPLOAD_FOLDER'] = params['upload_location']
 #setting up email notification////
-
+mail = Mail()
+app.config["MAIL_SERVER"]= "smtp.fastmail.com"
+app.config["MAIL_PORT"]= 465
+app.config["MAIL_USERNAME"]= params['mail-user']
+app.config["MAIL_PASSWORD"]=params['mail-password']
+app.config["MAIL_USE_TLS"]= False
+app.config["MAIL_USE_SSL"]= True
+mail.init_app(app)
 # app.config.update(
 #     MAIL_SERVER = 'smtp.gmail.com',
 #     MAIL_PORT = '465',
@@ -193,7 +201,13 @@ def contact():
         entry = Contacts(name=name,phone_no = phone, msg=message, email=email, date=datetime.now())
         db.session.add(entry)
         db.session.commit()
-
+        msg = EmailMessage(
+        "Message from DEPLOID",
+        f"{name}\n{message}\n{phone}\n{email}",
+        "tkn@fastmail.com",
+        ["tancannonrobotics@gmail.com"]
+        )
+        msg.send()
         # mail.send_message('New message from'+ name,
         #                   sender=email,
         #                   recipients = [params['gmail-user']],
