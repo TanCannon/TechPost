@@ -9,7 +9,7 @@
                         <div class="site-heading">
                             <!-- i am using the config.json file to get these values and using it here by jinjer templating -->
                             <h1>{{params['website_name']}}</h1>
-                            <span class="subheading">Deploy your project</span>
+                            <span class="subheading">Exploring the Future of Innovation and Technology</span>
                         </div>
                     </div>
                 </div>
@@ -30,13 +30,16 @@
                                 <h2 class="post-title">{{post.title}}</h2>
                                 <h3 class="post-subtitle">{{post.tag_line}}</h3>
                             </a>
-                            <p class="post-meta">
+                            <!-- <p class="post-meta">
                                 Posted by
                                 <a href="#!">Start Bootstrap</a>
                                 on {{post.date}}
+                            </p> -->
+                            <p class="post-meta">
+                                Posted on {{post.date}}
                             </p>
                         </div>
-                        {{post.content[0:150]}}...
+                        {{post.content[0:150]|safe}}...
                     {% endfor %}
 
 

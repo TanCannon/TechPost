@@ -10,11 +10,12 @@
         "mail-user":"tkn@fastmail.com",
         "mail-password":"ye98zakzc5b9cf4l",
         "mail-receiver":"tancannonrobotics@gmail.com",
-        "website_name": "DEPLOID",
-        "no_of_posts": 1,
+        "website_name": "TechScribe ",
+        "no_of_posts": 2,
         "admin_name": "Tanmaya",
         "admin_password":"12345",
-        "upload_location":"D:\\coding2\\pyhton_practice\\flask_tutorial\\test site\\static"
+        "upload_location":"D:\\CV\\PROJECTS\\My projects\\posts website\\posts-website-main\\static\\assets\\img"
+        
     }
     
 }

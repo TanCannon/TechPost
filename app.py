@@ -1,10 +1,13 @@
 '''here ill give edit and add and delete  and upload too posts option for the admin'''
 from flask import Flask, render_template , request, session, redirect
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import desc
 import json
 from datetime import datetime #ill use this to pass current date in the form
-# from flask_mail import Mail #using to send email notification//////
+# from flask_mail import Mail #using to send email 
+# notification//////
 from flask_mailman import Mail, EmailMessage #using to send email notification
+
 import os 
 from werkzeug.utils import secure_filename
 import math
@@ -26,13 +29,22 @@ app.config["MAIL_PASSWORD"]=params['mail-password']
 app.config["MAIL_USE_TLS"]= False
 app.config["MAIL_USE_SSL"]= True
 mail.init_app(app)
+
+# EMAIL_HOST = "smtp.gmail.com"
+# EMAIL_HOST_USER = "tanmayakumarnaik2003@gmail.com"
+# EMAIL_HOST_PASSWORD = 'xidjjstjrizbznuy'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_USE_SSL = False
+# mail = Mail(app)
+
 # app.config.update(
 #     MAIL_SERVER = 'smtp.gmail.com',
-#     MAIL_PORT = '465',
+#     MAIL_PORT = '465', #587,465
 #     MAIL_USER_SSL = True,
-#     # MAIL_USER_TLS = FLAS,
-#     MAIL_USERNAME = params['gmail-user'],
-#     MAIL_PASSWORD = params['gmail-password']
+#     MAIL_USER_TLS = False,
+#     MAIL_USERNAME = 'tanmayakumarnaik@gmail.com',
+#     MAIL_PASSWORD ='xidjjstjrizbznuy'
 # )
 # mail = Mail(app)
 #-----------------------------------------#
@@ -64,7 +76,7 @@ class Posts(db.Model):
     sno= db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(80), nullable=False)
     slug = db.Column(db.String(21), nullable=False)
-    content = db.Column(db.String(120), nullable=False)
+    content = db.Column(db.String(5000), nullable=False)
     tag_line = db.Column(db.String(120), nullable=False)
     date = db.Column(db.String(20), nullable=True)
     img_file = db.Column(db.String(12), nullable=True)
@@ -151,7 +163,7 @@ def dashboard():
 @app.route("/")
 def home():
     '''------------------///////////////////pagination////////////--------------------'''
-    posts = Posts.query.filter_by().all()
+    posts = Posts.query.order_by(desc(Posts.date)).all()
     last = math.ceil(len(posts)/int(params['no_of_posts']))
     page = request.args.get('page')
     if (not str(page).isnumeric()):
@@ -198,9 +210,10 @@ def contact():
         '''
         sno,name,phone_num,msg,date,email
         '''
-        entry = Contacts(name=name,phone_no = phone, msg=message, email=email, date=datetime.now())
-        db.session.add(entry)
-        db.session.commit()
+        # entry = Contacts(name=name,phone_no = phone, msg=message, email=email, date=datetime.now())
+        # db.session.add(entry)
+        # db.session.commit()
+
         msg = EmailMessage(
         "Message from DEPLOID",
         f"{name}\n{message}\n{phone}\n{email}",
@@ -208,11 +221,12 @@ def contact():
         [params['mail-receiver']]
         )
         msg.send()
+
         # mail.send_message('New message from'+ name,
-        #                   sender=email,
-        #                   recipients = [params['gmail-user']],
-        #                   body = message + "\n" + phonṇe)
-        # return render_template('index.html',params=params
+        #                   sender='tanmayakumarnaik2003@gmail.com',
+        #                   recipients = ["tancannonrobotics@gmail.com"],
+        #                   body = message + "\n" + phone + "\n" + email)
+        # return render_template('index.html',params=params)
     return render_template('contact.html',params= params)#params=params passing data mentioned in config.json
 
 app.run(debug=True)
