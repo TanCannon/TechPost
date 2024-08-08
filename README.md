@@ -24,4 +24,18 @@ More screenshots [here](https://github.com/TanCannon/TechPost/tree/main/screensh
 
 ## How to run?
 
+1. transfer the dumped.sql in your mysql server.
+
+    In mysql cmd first select a database, then type "source /path_to_the_dumpeed.sql_folder/dumpeed.sql
+
+2. In config.json
+
+   Put your own local url of the mysql server, add your own production url of mysql server.
+
+3. more configurations can be made in config.json
+
+4. In terminal, type "python app.py"
+   
+   
+
 python app.py
