@@ -36,6 +36,6 @@ More screenshots [here](https://github.com/TanCannon/TechPost/tree/main/screensh
 
 4. In terminal, type "python app.py"
    
-   
+## Future goals
 
-python app.py
+Send a email to the admin to notify if a user submit a messsage in the contact page.
