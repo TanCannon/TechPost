@@ -1,9 +1,15 @@
 {
     "params": 
     {
+<<<<<<< Updated upstream
         "local_server": "True",
         "local_uri":" ",
         "prod_uri": " ",
+=======
+        "local_server": 1,
+        "local_uri":"mysql://root:Tanmaya#2003@localhost/pyconnectivity",
+        "prod_uri": "mysql://TanCannon2003:Y&Vj*d6]qU+Jxs%@TanCannon2003.mysql.pythonanywhere-services.com/TanCannon2003$pyconnectivity",
+>>>>>>> Stashed changes
         "fb_url":"https://facebook.com",
         "tw_url":"https://twitter.com",
         "gh_url":"https://github.com",
