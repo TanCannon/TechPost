@@ -198,6 +198,7 @@ def about():
 # http://127.0.0.1:5000/bootstrap
 @app.route("/contact", methods = ['GET', 'POST'])
 def contact():
+    sendStatus = {'val': 0}
     if (request.method == 'POST'):
         '''add entry to the database'''
         ##fetching entries
@@ -210,23 +211,28 @@ def contact():
         '''
         sno,name,phone_num,msg,date,email
         '''
-        # entry = Contacts(name=name,phone_no = phone, msg=message, email=email, date=datetime.now())
-        # db.session.add(entry)
-        # db.session.commit()
+        entry = Contacts(name=name,phone_no = phone, msg=message, email=email, date=datetime.now())
+        db.session.add(entry)
+        db.session.commit()
+        print("Message sent to admin.")
+        sendStatus['val'] = 1
 
-        msg = EmailMessage(
-        "Message from DEPLOID",
-        f"{name}\n{message}\n{phone}\n{email}",
-        params['mail-user'],
-        [params['mail-receiver']]
-        )
-        msg.send()
+        # try:
+        #     msg = EmailMessage(
+        #     "Message from DEPLOID",
+        #     f"{name}\n{message}\n{phone}\n{email}",
+        #     params['mail-user'],
+        #     [params['mail-receiver']]
+        #     )
+        #     msg.send()
+        # except:
+        #     print("FAILED TO SEND EMAIL TO ADMIN.")
 
         # mail.send_message('New message from'+ name,
         #                   sender='tanmayakumarnaik2003@gmail.com',
         #                   recipients = ["tancannonrobotics@gmail.com"],
         #                   body = message + "\n" + phone + "\n" + email)
         # return render_template('index.html',params=params)
-    return render_template('contact.html',params= params)#params=params passing data mentioned in config.json
+    return render_template('contact.html',params= params, sendStatus = sendStatus)#params=params passing data mentioned in config.json
 
 app.run(debug=True)
