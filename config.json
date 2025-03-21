@@ -2,7 +2,7 @@
     "params": 
     {
         "local_server": 1,
-        "local_uri":"",
+        "local_uri":"mysql://root:@localhost/deploid",
         "prod_uri": "",
         "fb_url":"https://facebook.com",
         "tw_url":"https://twitter.com",
