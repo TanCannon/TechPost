@@ -1,7 +1,7 @@
 {
     "params": 
     {
-        "local_server": 1,
+        "local_server": 11,
         "local_uri":"mysql://root:Tanmaya#2003@localhost/pyconnectivity",
         "prod_uri": "",
         "fb_url":"https://facebook.com",
