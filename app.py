@@ -107,7 +107,7 @@ def delete(sno):
 @app.route("/edit/<string:sno>",methods=['GET','POST'])
 def edit(sno):
     if 'user' in session and session['user'] == params['admin_name']:
-        print("inside edit")
+        print(f"inside edit: {sno}")
         if request.method == "POST":
             box_title = request.form.get('title')
             tagline = request.form.get('tline')
@@ -131,9 +131,10 @@ def edit(sno):
                 post.date = date
                 db.session.commit()
                 return redirect('/edit/'+sno)
-        posts = Posts.query.filter_by(sno=sno).first()
+        if (sno != 0):
+            posts = Posts.query.filter_by(sno=sno).first()
         # print(posts.sno)      
-        return render_template('edit.html', params=params, posts=posts)
+        return render_template('edit.html', params=params, posts=posts, sno=sno)
     else:
         return "ADMIN needs to login"
 

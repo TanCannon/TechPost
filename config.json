@@ -2,7 +2,7 @@
     "params": 
     {
         "local_server": 1,
-        "local_uri":"mysql://root:@localhost/deploid",
+        "local_uri":"mysql://root:Tanmaya#2003@localhost/pyconnectivity",
         "prod_uri": "",
         "fb_url":"https://facebook.com",
         "tw_url":"https://twitter.com",
@@ -11,7 +11,7 @@
         "mail-password":" ",
         "mail-receiver":" ",
         "website_name": "TechPost",
-        "no_of_posts": 2,
+        "no_of_posts": 4,
         "admin_name": "Tanmaya",
         "admin_password":"12345",
         "upload_location":"D:\\CV\\PROJECTS\\My projects\\posts website\\posts-website-main\\static\\assets\\img"

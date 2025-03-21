@@ -21,7 +21,7 @@
                 <div class="col-md-10 col-lg-8 col-xl-7">
                     <h1>Add/edit post</h1>
                     <!-- this page is copied by me from index.html and the table is inserted insted of the post loop -->
-                    <form name="sentmessage" id="contactForm" action="/edit/0" method="post" data-sb-form-api-token="API_TOKEN">
+                    <form name="sentmessage" id="contactForm" action="/edit/{{sno}}" method="post" data-sb-form-api-token="API_TOKEN">
                         <div class="form-floating">
                             <!-- i have added name="name" -->
                             <input class="form-control" id="title" name="title" type="text" placeholder="Title" data-sb-validations="required" value="{{posts.title}}" />
