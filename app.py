@@ -81,6 +81,11 @@ class Posts(db.Model):
     date = db.Column(db.String(20), nullable=True)
     img_file = db.Column(db.String(12), nullable=True)
 
+#added ads.txt
+@app.route('/ads.txt')
+def ads_txt():
+    return send_from_directory('static', 'ads.txt')
+
 # Load Browser Favorite Icon
 @app.route('/favicon.ico')
 def favicon():
