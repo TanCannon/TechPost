@@ -1,5 +1,5 @@
 '''here ill give edit and add and delete  and upload too posts option for the admin'''
-from flask import Flask, render_template , request, session, redirect
+from flask import Flask, render_template , request, session, redirect, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import desc
 import json
@@ -80,6 +80,11 @@ class Posts(db.Model):
     tag_line = db.Column(db.String(120), nullable=False)
     date = db.Column(db.String(20), nullable=True)
     img_file = db.Column(db.String(12), nullable=True)
+
+# Load Browser Favorite Icon
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory('static', 'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 @app.route("/logout")
 def logout():
