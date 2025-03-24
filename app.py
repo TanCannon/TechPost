@@ -1,7 +1,7 @@
 '''here ill give edit and add and delete  and upload too posts option for the admin'''
-from flask import Flask, render_template , request, session, redirect, send_from_directory
+from flask import Flask, render_template , request, session, redirect, send_from_directory, url_for, Response
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import desc
+from sqlalchemy import desc, text
 import json
 from datetime import datetime #ill use this to pass current date in the form
 # from flask_mail import Mail #using to send email 
@@ -78,8 +78,38 @@ class Posts(db.Model):
     slug = db.Column(db.String(21), nullable=False)
     content = db.Column(db.String(5000), nullable=False)
     tag_line = db.Column(db.String(120), nullable=False)
-    date = db.Column(db.String(20), nullable=True)
+    date =  db.Column(db.DateTime, default=datetime.now())
     img_file = db.Column(db.String(12), nullable=True)
+
+def get_blog_posts():
+    query = text("SELECT slug, date FROM Posts")
+    result = db.session.execute(query)
+    return [{"slug": row.slug, "lastmod": row.date.date().isoformat()} for row in result]
+
+
+# Define restricted URLs that should not be included in the sitemap
+EXCLUDED_ROUTES = {'/dashboard', '/uploader', '/logout'}
+
+# Sitemap route
+@app.route('/sitemap.xml')
+def sitemap():
+    pages = []
+
+    # Add static pages
+    for rule in app.url_map.iter_rules():
+        if "GET" in rule.methods and len(rule.arguments) == 0:
+            url = url_for(rule.endpoint, _external=True)
+            if rule.rule not in EXCLUDED_ROUTES:
+                pages.append({"loc": url, "lastmod": datetime.now().date().isoformat()})
+
+    # Add dynamic blog posts
+    for post in get_blog_posts():
+        url = url = url_for('post_route', post_slug=post['slug'], _external=True)
+        pages.append({"loc": url, "lastmod": post["lastmod"]})
+
+    # Render XML template
+    sitemap_xml = render_template("sitemap_template.xml", pages=pages)
+    return Response(sitemap_xml, mimetype="application/xml")
 
 #added ads.txt
 @app.route('/ads.txt')
