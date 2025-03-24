@@ -11246,3 +11246,21 @@ header.masthead .site-heading .h1 {
     font-size: 2.25rem;
   }
 }
+
+@media (max-width:411px){
+  #copy-right-label{
+    font-size: 0.7em;
+  }
+  .nav-button{
+    font-size: 0.5em;
+  }
+}
+
+@media (max-width:336px){
+  #copy-right-label{
+    font-size: 0.5em;
+  }
+  .nav-button{
+    font-size: 0.5em;
+  }
+}
