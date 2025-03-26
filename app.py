@@ -123,7 +123,8 @@ def favicon():
 
 @app.route("/logout")
 def logout():
-    session.pop('user')
+    if 'user' in session and session['user'] == params['admin_name']:
+        session.pop('user')
     return redirect('/dashboard') 
 
 #here we can upload file to the params['upload_location'] in config.json///

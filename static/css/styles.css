@@ -11247,7 +11247,7 @@ header.masthead .site-heading .h1 {
   }
 }
 
-@media (max-width:411px){
+@media screen and (max-width:411px){
   #copy-right-label{
     font-size: 0.7em;
   }
@@ -11256,7 +11256,7 @@ header.masthead .site-heading .h1 {
   }
 }
 
-@media (max-width:336px){
+@media screen and (max-width:336px){
   #copy-right-label{
     font-size: 0.5em;
   }
