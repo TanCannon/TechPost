@@ -1,8 +1,26 @@
 {% extends "layout.html" %}
+
+{%if post.img_file != ''%} <!--handel image file name is not given-->
+    {% set fname = 'assets/img/'+ post.img_file %} <!---created a jinger variable to be able to change the bg image-->
+{%else%}
+    {% set fname =  'assets/img/default-thumbnail.jpg' %}
+{% endif %}
+
+{% block title %}{{ post.title }} - {{ params['website_name'] }}{% endblock %}
+{% block meta_description %}{{ post.description or params['website_description'] }}{% endblock %}
+
+{% block og_title %}{{ post.title }}{% endblock %}
+{% block og_description %}{{ post.description }}{% endblock %}
+{% block og_image %}{{ url_for('static',filename=fname, _external=True)}}{% endblock %}
+
+{% block twitter_title %}{{ post.title }}{% endblock %}
+{% block twitter_description %}{{ post.description }}{% endblock %}
+{% block twitter_image %}{{ url_for('static',filename=fname,  _external=True)}}{% endblock %}
+
 {% block body %}
+        
         <!-- Page Header-->
-        {% set fname = 'assets/img/'+ post.img_file %} <!---created a jinger variable to be able to change the bg image-->
-        <header class="masthead" style="background-image: url('{{url_for('static',filename=fname)}}">
+        <header class="masthead" style="background-image: url('{{url_for('static',filename=fname)}}')">
             <div class="container position-relative px-4 px-lg-5">
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-md-10 col-lg-8 col-xl-7">

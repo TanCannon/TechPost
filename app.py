@@ -74,12 +74,13 @@ class Posts(db.Model):
     sno,name,phone_num,msg,date,email
     '''
     sno= db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(80), nullable=False)
-    slug = db.Column(db.String(21), nullable=False)
-    content = db.Column(db.String(5000), nullable=False)
-    tag_line = db.Column(db.String(120), nullable=False)
+    title = db.Column(db.String(255), nullable=False)
+    slug = db.Column(db.String(255), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    tag_line = db.Column(db.String(255), nullable=False)
+    description = db.Column(db.String(500), nullable=False, default="Tan's Bloppost")
     date =  db.Column(db.DateTime, default=datetime.now())
-    img_file = db.Column(db.String(12), nullable=True)
+    img_file = db.Column(db.String(120), nullable=True)
 
 def get_blog_posts():
     query = text("SELECT slug, date FROM Posts")
@@ -152,6 +153,7 @@ def edit(sno):
         if request.method == "POST":
             box_title = request.form.get('title')
             tagline = request.form.get('tline')
+            description = request.form.get('description')
             slug = request.form.get('slug')
             content = request.form.get('content')
             img_file = request.form.get('img_file')
@@ -159,7 +161,7 @@ def edit(sno):
             # print(posts.sno)
 
             if sno == '0': #adding post at /edit/0
-                post = Posts(title = box_title, slug=slug, content=content, tag_line=tagline,img_file=img_file, date=date)
+                post = Posts(title = box_title, slug=slug, content=content, tag_line=tagline,description=description, img_file=img_file, date=date)
                 db.session.add(post)
                 db.session.commit()
             else:
@@ -168,6 +170,7 @@ def edit(sno):
                 post.slug = slug
                 post.content = content
                 post.tag_line = tagline
+                post.description = description
                 post.img_file = img_file
                 post.date = date
                 db.session.commit()
@@ -276,5 +279,9 @@ def contact():
         #                   body = message + "\n" + phone + "\n" + email)
         # return render_template('index.html',params=params)
     return render_template('contact.html',params= params, sendStatus = sendStatus)#params=params passing data mentioned in config.json
+
+@app.errorhandler(404)
+def notFound(request):
+    return render_template("404.html", params=params)
 
 app.run(debug=True)

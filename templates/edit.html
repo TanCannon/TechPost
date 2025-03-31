@@ -30,13 +30,23 @@
                             <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
                         </div>
                         <div class="form-floating">
-                            <!---i have added name="email"--->
+                            <!---i have added name="email"-->
                             <input class="form-control" id="tline" name="tline" type="text" placeholder="Tagline" data-sb-validations="required,email" value="{{posts.tag_line}}"/>
 
                             <label for="tline">Tagline</label>
                             <div class="invalid-feedback" data-sb-feedback="email:required">An email is required.</div>
                             <div class="invalid-feedback" data-sb-feedback="email:email">Email is not valid.</div>
                         </div>
+
+                        <div class="form-floating">
+                            <!---i have added name="email"-->
+                            <input class="form-control" id="description" name="description" type="text" placeholder="Description" data-sb-validations="required,email" value="{{posts.description}}"/>
+
+                            <label for="description">Description</label>
+                            <div class="invalid-feedback" data-sb-feedback="email:required">An email is required.</div>
+                            <div class="invalid-feedback" data-sb-feedback="email:email">Email is not valid.</div>
+                        </div>
+
                         <div class="form-floating">
                             
                             <input class="form-control" id="slug" name="slug" type="text" placeholder="slug" data-sb-validations="required" value="{{posts.slug}}"/>
