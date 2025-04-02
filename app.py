@@ -80,6 +80,7 @@ class Posts(db.Model):
     tag_line = db.Column(db.String(255), nullable=False)
     description = db.Column(db.String(500), nullable=False, default="Tan's Bloppost")
     date =  db.Column(db.DateTime, default=datetime.now())
+    last_modified = db.Column(db.DateTime, nullable=True)
     img_file = db.Column(db.String(120), nullable=True)
 
 def get_blog_posts():
@@ -172,7 +173,7 @@ def edit(sno):
                 post.tag_line = tagline
                 post.description = description
                 post.img_file = img_file
-                post.date = date
+                post.last_modified = date
                 db.session.commit()
                 return redirect('/edit/'+sno)
         if (sno != 0):

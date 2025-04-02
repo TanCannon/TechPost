@@ -25,6 +25,10 @@
         <title>{{params['website_name']}}</title>
         <!--add the favicon-->
         <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
+        <!--add the canonical page url-->
+        <link rel="canonical" href="{{request.url}}">
+
         <!-- Font Awesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
         <!-- Google fonts-->
