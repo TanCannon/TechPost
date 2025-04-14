@@ -4,6 +4,7 @@
 A python implementation of a blog website's backend.
 
 This is a blog website dedicated to exploring the latest in technology and innovation. Built with Flask, The TechPost provides insightful articles on emerging technologies such as AI, quantum computing, AR/VR, and 5G. 
+> You can view my blog webiste here: [https://tancannon2003.pythonanywhere.com/](https://tancannon2003.pythonanywhere.com/)
 
 ## Features:
 Blog Articles: In-depth posts on the latest technological advancements.
