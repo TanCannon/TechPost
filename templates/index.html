@@ -12,6 +12,7 @@
 {% block twitter_description %}{{''}}{% endblock %}
 {% block twitter_image %}{{ url_for('static',filename='assets/img/home-bg.jpg',  _external=True)}}{% endblock %}
 
+{% block page_style %}{{url_for('static', filename='css/index.css')}}{% endblock page_style %}
 
 {% block body %}
         <!-- Page Header-->
