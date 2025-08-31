@@ -235,8 +235,8 @@ def home():
 # https://www.codewithharry.com/videos/web-dev-using-flask-and-python-1/ , "/web-dev-using-flask-and-python-1/" HERE THIS IS A SLUG
 def post_route(post_slug):
     post = Posts.query.filter_by(slug=post_slug).first() #fetching data form dbms as a dictionary, i have used this to show in post.html
-    # if not post:
-    #     abort(404)  # Return proper 404 instead of 500
+    if not post:
+        abort(404)  # Return proper 404 instead of 500
     return render_template('post.html',params= params,post=post)#params=params passing data mentioned in config.json
 
 @app.route("/about")
