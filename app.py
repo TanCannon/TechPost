@@ -293,4 +293,4 @@ def notFound(request):
 def internal_server_error(e):
     return render_template('500.html'), 500
 
-# app.run(debug=True)
+app.run(debug=params['app_debug_mode'])
