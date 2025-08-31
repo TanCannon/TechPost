@@ -1,5 +1,5 @@
 '''here ill give edit and add and delete  and upload too posts option for the admin'''
-from flask import Flask, render_template , request, session, redirect, send_from_directory, url_for, Response
+from flask import Flask, render_template , request, session, redirect, send_from_directory, url_for, Response, abort
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import desc, text
 import json
@@ -235,6 +235,8 @@ def home():
 # https://www.codewithharry.com/videos/web-dev-using-flask-and-python-1/ , "/web-dev-using-flask-and-python-1/" HERE THIS IS A SLUG
 def post_route(post_slug):
     post = Posts.query.filter_by(slug=post_slug).first() #fetching data form dbms as a dictionary, i have used this to show in post.html
+    # if not post:
+    #     abort(404)  # Return proper 404 instead of 500
     return render_template('post.html',params= params,post=post)#params=params passing data mentioned in config.json
 
 @app.route("/about")
@@ -281,8 +283,14 @@ def contact():
         # return render_template('index.html',params=params)
     return render_template('contact.html',params= params, sendStatus = sendStatus)#params=params passing data mentioned in config.json
 
+# Custom 404 error handler
 @app.errorhandler(404)
 def notFound(request):
     return render_template("404.html", params=params)
+
+# Custom 500 error handler (optional for server errors)
+@app.errorhandler(500)
+def internal_server_error(e):
+    return render_template('500.html'), 500
 
 app.run(debug=True)
