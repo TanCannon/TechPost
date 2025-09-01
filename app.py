@@ -13,7 +13,7 @@ from werkzeug.utils import secure_filename
 import math
 
 '''we can use the json file here to add our own parameters'''
-with open('config.json','r') as c: #reading from json file the urls
+with open('./config.json','r') as c: #reading from json file the urls
     params = json.load(c)['params']
 
 local_server = True 
