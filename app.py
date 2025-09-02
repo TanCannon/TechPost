@@ -234,7 +234,7 @@ def home():
 
 # http://127.0.0.1:5000/about
 
-@app.route("/post/<string:post_slug>",methods=['GET'])
+@app.route("/blog/<string:post_slug>",methods=['GET'])
 # https://www.codewithharry.com/videos/web-dev-using-flask-and-python-1/ , "/web-dev-using-flask-and-python-1/" HERE THIS IS A SLUG
 def post_route(post_slug):
     post = Posts.query.filter_by(slug=post_slug).first() #fetching data form dbms as a dictionary, i have used this to show in post.html
