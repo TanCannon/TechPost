@@ -4,11 +4,11 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import desc, text
 import json
 from datetime import datetime #ill use this to pass current date in the form
-# from flask_mail import Mail #using to send email 
+# from flask_mail import Mail #using to send email
 # notification//////
 from flask_mailman import Mail, EmailMessage #using to send email notification
 
-import os 
+import os
 from werkzeug.utils import secure_filename
 import math
 
@@ -19,8 +19,8 @@ print(f"CONFIG_PATH:{config_path}")
 with open(config_path,'r') as c: #reading from json file the urls
     params = json.load(c)['params']
 
-local_server = True 
-app = Flask(__name__) 
+local_server = params["local_server"]
+app = Flask(__name__)
 app.secret_key = 'supersecretkey' #kuch bhi rakh skte ho
 app.config['UPLOAD_FOLDER'] = params['upload_location']
 #setting up email notification////
@@ -54,9 +54,9 @@ mail.init_app(app)
 
 #----------connecting to the sqlachemy database--------#
 if (local_server):
-    app.config["SQLALCHEMY_DATABASE_URI"] = params['local_uri']#'mysql://root:@localhost/deploid' 
+    app.config["SQLALCHEMY_DATABASE_URI"] = params['local_uri']#'mysql://root:@localhost/deploid'
     # app.config[""]
-else: 
+else:
     app.config["SQLALCHEMY_DATABASE_URI"] = params['prod_uri']#"mysql://root:@localhost/deploid"
 
 db = SQLAlchemy(app)
@@ -70,7 +70,7 @@ class Contacts(db.Model):
     phone_no = db.Column(db.String(12), nullable=False)
     msg = db.Column(db.String(120), nullable=False)
     date = db.Column(db.String(20), nullable=True)
-    email = db.Column(db.String(20), nullable=False)    
+    email = db.Column(db.String(20), nullable=False)
 
 class Posts(db.Model):
     '''
@@ -130,7 +130,7 @@ def favicon():
 def logout():
     if 'user' in session and session['user'] == params['admin_name']:
         session.pop('user')
-    return redirect('/dashboard') 
+    return redirect('/dashboard')
 
 #here we can upload file to the params['upload_location'] in config.json///
 @app.route("/uploader",methods=['GET','POST'])
@@ -181,7 +181,7 @@ def edit(sno):
                 return redirect('/edit/'+sno)
         if (sno != 0):
             posts = Posts.query.filter_by(sno=sno).first()
-        # print(posts.sno)      
+        # print(posts.sno)
         return render_template('edit.html', params=params, posts=posts, sno=sno)
     else:
         return "ADMIN needs to login"
@@ -228,7 +228,7 @@ def home():
     else:
         prev = "/?page=" + str(page-1)
         next = "/?page=" + str(page+1)
-        
+
     return render_template('index.html',params= params,posts=posts, prev=prev, next=next)#params=params passing data mentioned in config.json to be used for the link in <a href>
 #------------------------------------------------------------------------------------------#
 
@@ -294,6 +294,6 @@ def notFound(request):
 # Custom 500 error handler (optional for server errors)
 @app.errorhandler(500)
 def internal_server_error(e):
-    return render_template('500.html'), 500
+    return render_template("500.html", params=params), 500
 
-app.run(debug=params['app_debug_mode'])
+# app.run(debug=params['app_debug_mode'])
