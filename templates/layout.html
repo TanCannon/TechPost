@@ -68,28 +68,28 @@
                         <ul class="list-inline text-center">
                             <li class="list-inline-item">
                                 <!-- i added links from config.json through app.py -->
-                                <a href="{{params['tw_url']}}"  target="_blank"> <!--target="_blank" means the url opens in new tab-->
+                                <a href="{{params['tw_url']}}"  target="_blank" rel="noopener noreferrer" aria-label="Twitter"> <!--target="_blank" means the url opens in new tab-->
                                     <span class="fa-stack fa-lg">
-                                        <i class="fas fa-circle fa-stack-2x"></i>
-                                        <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+                                        <i class="fas fa-circle fa-stack-2x" aria-hidden="true"></i>
+                                        <i class="fab fa-twitter fa-stack-1x fa-inverse" aria-hidden="true"></i>
                                     </span>
                                 </a>
                             </li>
                             <li class="list-inline-item">
                                 <!-- i added links from config.json through app.py -->
-                                <a href="{{params['fb_url']}}" target="_blank">
+                                <a href="{{params['fb_url']}}" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
                                     <span class="fa-stack fa-lg">
-                                        <i class="fas fa-circle fa-stack-2x"></i>
-                                        <i class="fab fa-facebook-f fa-stack-1x fa-inverse"></i>
+                                        <i class="fas fa-circle fa-stack-2x" aria-hidden="true"></i>
+                                        <i class="fab fa-facebook-f fa-stack-1x fa-inverse" aria-hidden="true"></i>
                                     </span>
                                 </a>
                             </li>
                             <li class="list-inline-item">
                                 <!-- i added links from config.json through app.py -->
-                                <a href="{{params['gh_url']}}" target="_blank">
+                                <a href="{{params['gh_url']}}" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
                                     <span class="fa-stack fa-lg">
-                                        <i class="fas fa-circle fa-stack-2x"></i>
-                                        <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                                        <i class="fas fa-circle fa-stack-2x" aria-hidden="true"></i>
+                                        <i class="fab fa-github fa-stack-1x fa-inverse" aria-hidden="true"></i>
                                     </span>
                                 </a>
                             </li>
