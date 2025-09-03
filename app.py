@@ -87,7 +87,7 @@ class Posts(db.Model):
     img_file = db.Column(db.String(120), nullable=True)
 
 def get_blog_posts():
-    query = text("SELECT slug, date FROM Posts")
+    query = text("SELECT slug, date FROM posts")
     result = db.session.execute(query)
     return [{"slug": row.slug, "lastmod": row.date.date().isoformat()} for row in result]
 
