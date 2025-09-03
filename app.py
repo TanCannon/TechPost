@@ -116,10 +116,14 @@ def sitemap():
     sitemap_xml = render_template("sitemap_template.xml", pages=pages)
     return Response(sitemap_xml, mimetype="application/xml")
 
+@app.route("/robots.txt")
+def robots_txt():
+    return send_from_directory(app.static_folder, "robots.txt", mimetype="text/plain")
+
 #added ads.txt
 @app.route('/ads.txt')
 def ads_txt():
-    return send_from_directory('static', 'ads.txt')
+    return send_from_directory(app.static_folder, 'ads.txt', mimetype='text/plain')
 
 # Load Browser Favorite Icon
 @app.route('/favicon.ico')
