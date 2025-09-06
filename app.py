@@ -7,6 +7,7 @@ from datetime import datetime #ill use this to pass current date in the form
 # from flask_mail import Mail #using to send email
 # notification//////
 from flask_mailman import Mail, EmailMessage #using to send email notification
+from flask_ckeditor import CKEditor
 
 import os
 from werkzeug.utils import secure_filename
@@ -32,6 +33,10 @@ app.config["MAIL_PASSWORD"]=params['mail-password']
 app.config["MAIL_USE_TLS"]= False
 app.config["MAIL_USE_SSL"]= True
 mail.init_app(app)
+
+app.config['CKEDITOR_SERVE_LOCAL'] = True   # serve local JS
+app.config['CKEDITOR_HEIGHT'] = 400         # default height
+app.config['CKEDITOR_FILE_UPLOADER'] = 'uploader'  # upload endpoint
 
 # EMAIL_HOST = "smtp.gmail.com"
 # EMAIL_HOST_USER = "tanmayakumarnaik2003@gmail.com"
@@ -60,6 +65,7 @@ else:
     app.config["SQLALCHEMY_DATABASE_URI"] = params['prod_uri']#"mysql://root:@localhost/deploid"
 
 db = SQLAlchemy(app)
+ckeditor = CKEditor(app)
 #--------------------------------------#
 class Contacts(db.Model):
     '''
@@ -143,7 +149,9 @@ def uploader():
         if (request.method == 'POST'):
             f = request.files['file1']
             f.save(os.path.join(app.config['UPLOAD_FOLDER'],secure_filename(f.filename)))
-            return "uploaded successfully"
+            # Return JSON for CKEditor to insert image
+            url = url_for('static', filename=f"uploads/{f.filename}")
+            return {"uploaded": 1, "fileName": f.filename, "url": url}
 
 @app.route("/delete/<string:sno>",methods=['GET','POST'])
 def delete(sno):

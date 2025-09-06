@@ -1,4 +1,7 @@
 {% extends "layout.html" %}
+
+{% block page_style %}{{url_for('static', filename='css/edit.css')}}{% endblock page_style %}
+
 {% block body %}
         <!-- Page Header-->
         <header class="masthead" style="background-image: url('{{url_for('static', filename='assets/img/home-bg.jpg')}}')">
@@ -91,4 +94,5 @@
                 </div>
             </div>
         </div>
+        <script> CKEDITOR.replace('content');  // attach CKEditor to that textarea </script>
 {% endblock %}    

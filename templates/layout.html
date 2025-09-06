@@ -50,6 +50,9 @@
 
     <!-- Core theme CSS -->
     <link href="{% block page_style %}{% endblock page_style %}" rel="stylesheet" />
+
+    {{ ckeditor.load() }}
+    {{ ckeditor.config(name='content') }}
 </head>
 <body>
     <!-- Navigation-->
