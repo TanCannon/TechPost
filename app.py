@@ -34,6 +34,8 @@ app.config["MAIL_USE_TLS"]= False
 app.config["MAIL_USE_SSL"]= True
 mail.init_app(app)
 
+#ckeditor settings
+# app.config['CKEDITOR_PKG_TYPE'] = 'full'   # use full toolbar with image plugin
 app.config['CKEDITOR_SERVE_LOCAL'] = True   # serve local JS
 app.config['CKEDITOR_HEIGHT'] = 400         # default height
 app.config['CKEDITOR_FILE_UPLOADER'] = 'uploader'  # upload endpoint
@@ -151,7 +153,8 @@ def uploader():
             f.save(os.path.join(app.config['UPLOAD_FOLDER'],secure_filename(f.filename)))
             # Return JSON for CKEditor to insert image
             url = url_for('static', filename=f"uploads/{f.filename}")
-            return {"uploaded": 1, "fileName": f.filename, "url": url}
+            # return {"uploaded": 1, "fileName": f.filename, "url": url}
+            return f"Image {url} uploaded successfully"
 
 @app.route("/delete/<string:sno>",methods=['GET','POST'])
 def delete(sno):

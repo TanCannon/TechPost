@@ -51,8 +51,8 @@
     <!-- Core theme CSS -->
     <link href="{% block page_style %}{% endblock page_style %}" rel="stylesheet" />
 
-    {{ ckeditor.load() }}
-    {{ ckeditor.config(name='content') }}
+    <!--add any required headers-->
+    {%block add_headers%}{%endblock add_headers%}
 </head>
 <body>
     <!-- Navigation-->

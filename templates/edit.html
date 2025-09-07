@@ -2,6 +2,11 @@
 
 {% block page_style %}{{url_for('static', filename='css/edit.css')}}{% endblock page_style %}
 
+{%block add_headers%}
+    {{ ckeditor.load() }}
+    {{ ckeditor.config(name='content') }}
+{%endblock add_headers%}
+
 {% block body %}
         <!-- Page Header-->
         <header class="masthead" style="background-image: url('{{url_for('static', filename='assets/img/home-bg.jpg')}}')">
