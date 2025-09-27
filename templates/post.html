@@ -6,7 +6,7 @@
     {% set fname =  'assets/img/default-thumbnail.jpg' %}
 {% endif %}
 
-{% block title %}{{ post.title }} | {{ params['website_name'] }}{% endblock %}
+{% block title %}{{ post.title }}{% endblock %}
 {% block meta_description %}{{ post.description or params['website_description'] }}{% endblock %}
 
 {% block og_title %}{{ post.title }}{% endblock %}
