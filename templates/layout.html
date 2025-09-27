@@ -25,7 +25,7 @@
     <meta name="twitter:image" content="{% block twitter_image %}{% endblock %}" />
     <meta name="twitter:url" content="{{ request.url }}" />
 
-    <title>{{ params['website_name'] }}</title>
+    <title>{% block title %}{{ params['website_name'] }}{% endblock %}</title>
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
