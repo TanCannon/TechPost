@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+
+
+{% set fname =  'assets/img/default-thumbnail.jpg' %}
+
+
+{% block title %}Folder Structure to Zip{% endblock %}
+
+
+
+
+{% block page_style %}{{url_for('static', filename='css/generateZip.css')}}{% endblock page_style %}
+{% block body %}
+   <header class="masthead" style="background-image: url('{{url_for('static', filename='assets/img/home-bg.jpg')}}')">
+        </header>
+    <!--main content-->
+    <div id="editor">
+        <h1>Paste ASCII Folder Structure</h1>
+        <form method="POST">
+        <textarea name="structure" placeholder="Paste your folder structure here..."></textarea>
+            <br><br>
+            <button type="submit">Generate ZIP</button>
+        </form>
+    </div>
+    
+{% endblock %}

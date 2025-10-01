@@ -1,5 +1,5 @@
 '''here ill give edit and add and delete  and upload too posts option for the admin'''
-from flask import Flask, render_template , request, session, redirect, send_from_directory, url_for, Response, abort
+from flask import Flask, render_template , request, session, redirect, send_from_directory, url_for, Response, abort, send_file
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import desc, text
 import json
@@ -10,6 +10,9 @@ from flask_mailman import Mail, EmailMessage #using to send email notification
 from flask_ckeditor import CKEditor
 
 import os
+import re
+import tempfile
+import zipfile
 from werkzeug.utils import secure_filename
 import math
 
@@ -99,6 +102,70 @@ def get_blog_posts():
     result = db.session.execute(query)
     return [{"slug": row.slug, "lastmod": row.date.date().isoformat()} for row in result]
 
+def create_structure_from_ascii(ascii_structure, base_dir):
+    lines = ascii_structure.strip().splitlines()
+    stack = [(0, base_dir)]  # Each item: (indent, full_path)
+    for line in lines:
+            if not line.strip():
+                continue
+
+            # Extract name after ├─, └─, or take root but leave '/' at the end
+            match = re.search(r"[├└]─\s*(.*)", line)
+            if match:
+                name = match.group(1).strip()
+            else:
+                name = line.strip()
+            # print(f"name: {name}")
+
+            # Compute indentation: number of leading spaces before the name
+            leading = line[:line.find(name)] if name in line else ""
+            # print(f"leading: {leading}")
+            indent = len(leading.replace("│", " "))  # treat pipes as spaces
+
+            # Find the parent in the stack with indentation < current indent
+            parent_path = None
+            for i in range(len(stack)-1, -1, -1):
+                if stack[i][0] < indent:
+                    parent_path = stack[i][1]
+                    break
+            if parent_path is None:
+                # No parent found → root-level folder
+                parent_path = base_dir
+
+            # Full path
+            full_path = os.path.join(parent_path, name.rstrip("/"))
+
+            # print(full_path)  # print instead of creating
+
+            # '''create the directory'''
+            
+
+            # If directory, push to stack
+            if name.endswith("/"):
+                # It's a directory → create it if not exists
+                os.makedirs(full_path, exist_ok=True)
+                stack.append((indent, full_path))
+            
+            else:
+                # It's a file → create an empty file
+                os.makedirs(os.path.dirname(full_path), exist_ok=True)  # make sure parent exists
+                with open(full_path, "w", encoding="utf-8") as f:
+                    f.write("")  # empty placeholder file
+
+def zip_folder(folder_path, zip_path):
+    with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
+        for root, dirs, files in os.walk(folder_path):
+            # Add empty directories
+            for dir in dirs:
+                dir_path = os.path.join(root, dir)
+                arcname = os.path.relpath(dir_path, folder_path) + "/"  # force trailing /
+                zipf.writestr(arcname, "")  # add empty entry for folder
+
+            # Add files
+            for file in files:
+                file_path = os.path.join(root, file)
+                arcname = os.path.relpath(file_path, folder_path)  # relative path in zip
+                zipf.write(file_path, arcname)
 
 # Define restricted URLs that should not be included in the sitemap
 EXCLUDED_ROUTES = {'/dashboard', '/uploader', '/logout'}
@@ -300,6 +367,28 @@ def contact():
         #                   body = message + "\n" + phone + "\n" + email)
         # return render_template('index.html',params=params)
     return render_template('contact.html',params= params, sendStatus = sendStatus)#params=params passing data mentioned in config.json
+
+# route for the "ascii tree to zip" feature page
+@app.route("/generate-zip", methods=["GET", "POST"])
+def generateZip():
+    if request.method == "POST":
+        ascii_tree = request.form.get("structure")
+
+        if not ascii_tree.strip():
+            return "No folder structure provided", 400
+
+        tmpdir = tempfile.mkdtemp()
+        base_path = os.path.join(tmpdir, "project")
+        os.makedirs(base_path, exist_ok=True)
+
+        create_structure_from_ascii(ascii_tree, base_path)
+
+        zip_path = os.path.join(tmpdir, "project.zip")
+        zip_folder(base_path, zip_path)
+
+        return send_file(zip_path, as_attachment=True, download_name="project.zip")
+
+    return render_template("generateZip.html", params=params)
 
 # Custom 404 error handler
 @app.errorhandler(404)
