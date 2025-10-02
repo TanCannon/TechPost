@@ -903,27 +903,204 @@ header.masthead .post-heading .meta a {
   }
 }
 
-#editor {
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    max-width: 800px;   /* optional: limit max width */
-    /* margin: auto; */
-    margin-bottom: 2%;
-    padding: 2%;
+.btn {
+  display: inline-block;
+  font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-weight: 800;
+  line-height: 1.5;
+  color: #212529;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  background-color: transparent;
+  border: 1px solid transparent;
+  padding: 1rem 1.75rem;
+  font-size: 0.875rem;
+  border-radius: 0;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn {
+    transition: none;
+  }
+}
+.btn:hover {
+  color: #212529;
+}
+ .btn:focus {
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(0, 133, 161, 0.25);
+}
+.btn:disabled, .btn.disabled {
+  pointer-events: none;
+  opacity: 0.65;
 }
 
-#editor h1,
-#editor textarea {
-  /* display: block; */
-  width: 100%;        /* they both take full width of parent */
-  /* box-sizing: border-box; */
+.btn-primary {
+  color: #fff;
+  background-color: #0085A1;
+  border-color: #0085A1;
+}
+.btn-primary:hover {
+  color: #fff;
+  background-color: #007189;
+  border-color: #006a81;
+}
+ .btn-primary:focus {
+  color: #fff;
+  background-color: #007189;
+  border-color: #006a81;
+  box-shadow: 0 0 0 0.25rem rgba(38, 151, 175, 0.5);
+}
+ .btn-primary:active {
+  color: #fff;
+  background-color: #006a81;
+  border-color: #006479;
+}
+ .btn-primary:active:focus {
+  box-shadow: 0 0 0 0.25rem rgba(38, 151, 175, 0.5);
+}
+.btn-primary:disabled, .btn-primary.disabled {
+  color: #fff;
+  background-color: #0085A1;
+  border-color: #0085A1;
 }
 
-#editor textarea {
-  min-height: 200px;  /* adjust as you like */
-  /* resize: vertical;   allow vertical resize only */
+#dualeditor {
+      font-family: monospace;
+      display: flex;
+      gap: 20px;
+      padding: 20px;
+      /* background: #f7f7f7; */
+      /* height: 100vh; */
+      margin: 0;
 }
+.editor {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.autoresizeeditor{
+
+  resize: vertical;          /* allow user to resize */
+  overflow: auto;        /* show scrollbars when needed */
+  min-height: 50vh;
+  /* min-width: 45vw; */
+}
+.editor-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.editor-label span {
+  font-weight: bold;
+  font-size: clamp(0.9rem, 2vw, 1.2rem);
+}
+.copy-btn {
+  font-size: clamp(0.8rem, 1.8vw, 1rem);
+  padding: 0.3em 0.8em;
+}
+.center-content-h{
+  display: flex;
+  justify-content: center;
+  /* margin-bottom: 1px; */
+}
+#submit-btn{
+  margin-bottom: 10%;
+}
+/* #submit-btn{
+  background-color: #f0f0f0;
+  margin-bottom: 10%;
+    color: #fff;
+background-color: #007189;
+border-color: #006a81;
+}
+#submit-btn:hover{
+  background-color: #d8d8d8;
+} */
+.CodeMirror-placeholder {
+  color: #999 !important;
+  /* font-style: italic; */
+}
+.CodeMirror {
+  flex: 1;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  /* height: auto; */
+  /* max-height: 90vh; */
+  height: 100% !important;
+  width: 100% !important;
+  /* min-width: 40vw; */
+}
+
+button.copy-btn {
+  padding: 4px 10px;
+  font-size: 13px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background: #10e6ee;
+  color: white;
+  transition: background 0.2s;
+}
+button.copy-btn:hover {
+  background: #13b6bd ;
+}
+button.copy-btn:active {
+  background: #27e8ef;
+}
+
+#center-user-guide{
+  flex-direction: column;
+  text-align: justify;
+  align-items: center;
+  margin: 2rem;
+}
+.editor-help {
+max-width: 900px;
+margin: 1rem 0;
+font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+color: #222;
+}
+
+.blurb {
+  background: #f7f9fc;
+  padding: 0.8rem;
+  border-radius: 6px;
+  border: 1px solid #e6eef6;
+}
+
+.example {
+  background: #0f1724;
+  color: #e6eef6;
+  padding: 0.9rem;
+  border-radius: 6px;
+  overflow: auto;
+  white-space: pre;
+  font-family: ui-monospace, SFMono-Regular, "Roboto Mono", "Courier New", monospace;
+}
+
+.pro-tip {
+  background: #fff8e6;
+  padding: 0.7rem;
+  border-left: 3px solid #ffcc00;
+  border-radius: 4px;
+}
+
+code {
+  background: #eef6ff;
+  padding: 0.08rem 0.25rem;
+  border-radius: 4px;
+  font-family: ui-monospace, SFMono-Regular, "Roboto Mono", monospace;
+}
+
 
 @media screen and (max-width:411px){
   #copy-right-label{

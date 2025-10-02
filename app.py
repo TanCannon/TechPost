@@ -369,10 +369,11 @@ def contact():
     return render_template('contact.html',params= params, sendStatus = sendStatus)#params=params passing data mentioned in config.json
 
 # route for the "ascii tree to zip" feature page
-@app.route("/generate-zip", methods=["GET", "POST"])
+@app.route("/ascii-tree-to-zip", methods=["GET", "POST"])
 def generateZip():
     if request.method == "POST":
-        ascii_tree = request.form.get("structure")
+        ascii_tree = request.form.get("unicodeContent")
+        # ascii_tree = request.json["unicodeContent"]
 
         if not ascii_tree.strip():
             return "No folder structure provided", 400
