@@ -931,7 +931,7 @@ header.masthead .post-heading .meta a {
 .btn:hover {
   color: #212529;
 }
- .btn:focus {
+.btn:focus {
   outline: 0;
   box-shadow: 0 0 0 0.25rem rgba(0, 133, 161, 0.25);
 }
@@ -986,7 +986,7 @@ header.masthead .post-heading .meta a {
   position: relative;
 }
 .autoresizeeditor{
-  resize: vertical;/* allow user to resize */
+  /* resize: vertical;allow user to resize */
   overflow: auto;        /* show scrollbars when needed */
   min-height: 50vh;  
   /* min-width: 45vw; */
@@ -1000,10 +1000,6 @@ header.masthead .post-heading .meta a {
 .editor-label span {
   font-weight: bold;
   font-size: clamp(0.9rem, 2vw, 1.2rem);
-}
-.copy-btn {
-  font-size: clamp(0.8rem, 1.8vw, 1rem);
-  padding: 0.3em 0.8em;
 }
 .center-content-h{
   display: flex;
@@ -1035,20 +1031,23 @@ header.masthead .post-heading .meta a {
   /* transition: all 0.2s ease-in-out; */
 }
 button.copy-btn {
-  padding: 4px 10px;
-  font-size: 13px;
+  font-size: clamp(0.8rem, 1.8vw, 1rem);
+  padding: 0.3em 0.8em;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  background: #10e6ee;
+  background-color: #0085A1;
+  border-color: #0085A1;
   color: white;
   transition: background 0.2s;
 }
 button.copy-btn:hover {
-  background: #13b6bd ;
+  background-color: #007189;
+  border-color: #006a81;
 }
 button.copy-btn:active {
-  background: #27e8ef;
+  background-color: #006a81;
+  border-color: #006479;
 }
 
 #center-user-guide{
@@ -1118,7 +1117,7 @@ code {
   }
   /*needed to sync autoresizeeditor and codemirror size in mobile view*/
   .autoresizeeditor{
-    resize: vertical;/* allow user to resize */
+    /* resize: vertical;allow user to resize */
     overflow: auto; /* show scrollbars when needed */
     min-height: 50vh;  
   }

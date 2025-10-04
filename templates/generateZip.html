@@ -28,11 +28,13 @@
 {% endblock page_style %}
 
 {%block add_headers%} 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/theme/material.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.css">
-    <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/javascript/javascript.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/display/placeholder.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.css" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/theme/material.css" media="print" onload="this.media='all'">
+
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/javascript/javascript.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/display/placeholder.js" defer></script>
+
 {% endblock %}
 
 {% block body %}
@@ -141,105 +143,114 @@
         };
     }
 
-    // Create editors
-    const unicodeBox = CodeMirror(document.getElementById("unicodeEditor"), {
-        lineNumbers: true,
-        lineWrapping: true,
-        mode: "text/plain",
-        theme: "material",
-        value: "",
-        placeholder: "├─, └─, │ style tree..."
-    });
+    //wrapping inside window event to wait for js for CodeMirror to load.    
+    window.addEventListener("DOMContentLoaded", () => {
+        // Create editors
+        const unicodeBox = CodeMirror(document.getElementById("unicodeEditor"), {
+            lineNumbers: true,
+            lineWrapping: true,
+            mode: "text/plain",
+            theme: "material",
+            value: "",
+            placeholder: "├─, └─, │ style tree..."
+        });
 
-    const asciiBox = CodeMirror(document.getElementById("asciiEditor"), {
-        lineNumbers: true,
-        lineWrapping: true,
-        mode: "text/plain",
-        theme: "material",
-        value: "",
-        placeholder: "|--, `-- style tree..."
-    });
+        const asciiBox = CodeMirror(document.getElementById("asciiEditor"), {
+            lineNumbers: true,
+            lineWrapping: true,
+            mode: "text/plain",
+            theme: "material",
+            value: "",
+            placeholder: "|--, `-- style tree..."
+        });
 
-    // Mirror cursor between editors
-    function mirrorCursor(source, target) {
-        const cursor = source.getCursor();
-        target.setCursor(cursor);
-    }
+            // Mirror cursor between editors
+        function mirrorCursor(source, target) {
+            const cursor = source.getCursor();
+            target.setCursor(cursor);
+        }
 
-    const handleUnicode = debounce((instance, changeObj) => {
-    // Ignore internal updates caused by setValue
-    if (changeObj.origin === "setValue") return;
-
-    const text = unicodeBox.getValue();
-    asciiBox.setValue(unicodeToAscii(text));
-    mirrorCursor(unicodeBox, asciiBox);
-    }, 300);
-
-    const handleAscii = debounce((instance, changeObj) => {
+        const handleUnicode = debounce((instance, changeObj) => {
         // Ignore internal updates caused by setValue
         if (changeObj.origin === "setValue") return;
 
-        const text = asciiBox.getValue();
-        unicodeBox.setValue(asciiToUnicode(text));
-        mirrorCursor(asciiBox, unicodeBox);
-    }, 300);
+        const text = unicodeBox.getValue();
+        asciiBox.setValue(unicodeToAscii(text));
+        mirrorCursor(unicodeBox, asciiBox);
+        }, 300);
+
+        const handleAscii = debounce((instance, changeObj) => {
+            // Ignore internal updates caused by setValue
+            if (changeObj.origin === "setValue") return;
+
+            const text = asciiBox.getValue();
+            unicodeBox.setValue(asciiToUnicode(text));
+            mirrorCursor(asciiBox, unicodeBox);
+        }, 300);
 
 
-    unicodeBox.on("change", handleUnicode);
-    asciiBox.on("change", handleAscii);
+        unicodeBox.on("change", handleUnicode);
+        asciiBox.on("change", handleAscii);
 
-    // Highlight on focus
-unicodeBox.on("focus", () => {
-  unicodeBox.getWrapperElement().classList.add("cm-editor-active");
-  asciiBox.getWrapperElement().classList.remove("cm-editor-active");
-});
-
-asciiBox.on("focus", () => {
-  asciiBox.getWrapperElement().classList.add("cm-editor-active");
-  unicodeBox.getWrapperElement().classList.remove("cm-editor-active");
-});
-
-// Remove highlight if both lose focus (optional)
-[unicodeBox, asciiBox].forEach(editor => {
-  editor.on("blur", () => {
-    setTimeout(() => {
-      if (
-        !document.activeElement.closest(".CodeMirror")
-      ) {
-        editor.getWrapperElement().classList.remove("cm-editor-active");
-      }
-    }, 100);
-  });
-});
-
-
-    // Copy buttons
-    async function copyToClipboard(target) {
-        const text = (target === "unicodeEditor")
-            ? unicodeBox.getValue()
-            : asciiBox.getValue();
-
-        try {
-            await navigator.clipboard.writeText(text);
-        } catch (err) {
-            console.error("Failed to copy:", err);
-            alert("Failed to copy");    
-        }
-    }
-
-    //copy buttons
-    document.querySelectorAll(".copy-btn").forEach(btn => {
-        btn.addEventListener("click", () => {
-            const target = btn.getAttribute("data-target");
-            copyToClipboard(target);
-            btn.textContent = "Copied!";
-            setTimeout(() => btn.textContent = "Copy", 1200);
+        // Highlight on focus
+        unicodeBox.on("focus", () => {
+        unicodeBox.getWrapperElement().classList.add("cm-editor-active");
+        asciiBox.getWrapperElement().classList.remove("cm-editor-active");
         });
-    });
 
-    //geneate zip button
-    document.getElementById("treeForm").addEventListener("submit", function () {
-        document.getElementById("unicodeHidden").value = unicodeBox.getValue();
+        asciiBox.on("focus", () => {
+        asciiBox.getWrapperElement().classList.add("cm-editor-active");
+        unicodeBox.getWrapperElement().classList.remove("cm-editor-active");
+        });
+
+        // Remove highlight if both lose focus (optional)
+        [unicodeBox, asciiBox].forEach(editor => {
+        editor.on("blur", () => {
+            setTimeout(() => {
+            if (
+                !document.activeElement.closest(".CodeMirror")
+            ) {
+                editor.getWrapperElement().classList.remove("cm-editor-active");
+            }
+            }, 100);
+        });
+        });
+
+        // Copy buttons
+        async function copyToClipboard(target) {
+            const text = (target === "unicodeEditor")
+                ? unicodeBox.getValue()
+                : asciiBox.getValue();
+
+            try {
+                await navigator.clipboard.writeText(text);
+            } catch (err) {
+                console.error("Failed to copy:", err);
+                alert("Failed to copy");    
+            }
+        }
+
+        //copy buttons
+        document.querySelectorAll(".copy-btn").forEach(btn => {
+            btn.addEventListener("click", () => {
+                const target = btn.getAttribute("data-target");
+                copyToClipboard(target);
+                btn.textContent = "Copied!";
+                setTimeout(() => btn.textContent = "Copy", 1200);
+            });
+        });
+
+        //geneate zip button and //form validation for editor to check for empty submission
+        document.getElementById("treeForm").addEventListener("submit", function (e) {
+            const unicodetext = unicodeBox.getValue();
+            if (unicodetext.trim()){
+                document.getElementById("unicodeHidden").value = unicodetext;
+            }
+            else{
+                e.preventDefault(); // stop form submission
+                alert("Please input a valid tree into the editor.")
+            }
+        });
     });
 </script>
     
