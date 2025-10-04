@@ -986,10 +986,9 @@ header.masthead .post-heading .meta a {
   position: relative;
 }
 .autoresizeeditor{
-
-  resize: vertical;          /* allow user to resize */
+  resize: vertical;/* allow user to resize */
   overflow: auto;        /* show scrollbars when needed */
-  min-height: 50vh;
+  min-height: 50vh;  
   /* min-width: 45vw; */
 }
 .editor-label {
@@ -1014,16 +1013,6 @@ header.masthead .post-heading .meta a {
 #submit-btn{
   margin-bottom: 10%;
 }
-/* #submit-btn{
-  background-color: #f0f0f0;
-  margin-bottom: 10%;
-    color: #fff;
-background-color: #007189;
-border-color: #006a81;
-}
-#submit-btn:hover{
-  background-color: #d8d8d8;
-} */
 .CodeMirror-placeholder {
   color: #999 !important;
   /* font-style: italic; */
@@ -1039,7 +1028,12 @@ border-color: #006a81;
   width: 100% !important;
   /* min-width: 40vw; */
 }
-
+.cm-editor-active {
+  border: 2px solid #64b5f6 !important; /* soft Material blue accent */
+  box-shadow: 0 0 0 2px rgba(100, 181, 246, 0.2); /* faint outer glow */
+  border-radius: 6px;
+  /* transition: all 0.2s ease-in-out; */
+}
 button.copy-btn {
   padding: 4px 10px;
   font-size: 13px;
@@ -1112,4 +1106,27 @@ code {
   #copy-right-label{
     font-size: 0.5em;
   }
+}
+@media (max-width: 768px) {
+  #dualeditor {
+        font-family: monospace;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding: 20px;
+        /* margin: 0; */
+  }
+  /*needed to sync autoresizeeditor and codemirror size in mobile view*/
+  .autoresizeeditor{
+    resize: vertical;/* allow user to resize */
+    overflow: auto; /* show scrollbars when needed */
+    min-height: 50vh;  
+  }
+  .CodeMirror {
+    flex: 1;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    height: 50vh !important;
+  } 
 }

@@ -160,48 +160,58 @@
         placeholder: "|--, `-- style tree..."
     });
 
-    //let activeEditor = null;
-
-    // Update editor content without moving cursor
-    function updateEditorContent(editor, newText) {
-        const cursor = editor.getCursor();   // save cursor position
-        const docText = editor.getValue();
-        if (docText === newText) return;     // no change
-
-        editor.operation(() => {
-            editor.setValue(newText);        // update text
-            editor.setCursor(cursor);        // restore cursor
-        });
-    }
-
     // Mirror cursor between editors
     function mirrorCursor(source, target) {
         const cursor = source.getCursor();
         target.setCursor(cursor);
     }
 
-    const handleUnicode = debounce(() => {
-        //if (activeEditor === "ascii") return;
-        //activeEditor = "unicode";
-        const text = unicodeBox.getValue();
-        //console.log(`current editor:${activeEditor}`)
-        updateEditorContent(asciiBox, unicodeToAscii(text));
-        mirrorCursor(unicodeBox, asciiBox);
-        activeEditor = null;
+    const handleUnicode = debounce((instance, changeObj) => {
+    // Ignore internal updates caused by setValue
+    if (changeObj.origin === "setValue") return;
+
+    const text = unicodeBox.getValue();
+    asciiBox.setValue(unicodeToAscii(text));
+    mirrorCursor(unicodeBox, asciiBox);
     }, 300);
 
-    const handleAscii = debounce(() => {
-        //if (activeEditor === "unicode") return;
-        //activeEditor = "ascii";
+    const handleAscii = debounce((instance, changeObj) => {
+        // Ignore internal updates caused by setValue
+        if (changeObj.origin === "setValue") return;
+
         const text = asciiBox.getValue();
-        //console.log(`current editor:${activeEditor}`)
-        updateEditorContent(unicodeBox, asciiToUnicode(text));
+        unicodeBox.setValue(asciiToUnicode(text));
         mirrorCursor(asciiBox, unicodeBox);
-        activeEditor = null;
     }, 300);
 
-    unicodeBox.on("inputRead", handleUnicode);
-    asciiBox.on("inputRead", handleAscii);
+
+    unicodeBox.on("change", handleUnicode);
+    asciiBox.on("change", handleAscii);
+
+    // Highlight on focus
+unicodeBox.on("focus", () => {
+  unicodeBox.getWrapperElement().classList.add("cm-editor-active");
+  asciiBox.getWrapperElement().classList.remove("cm-editor-active");
+});
+
+asciiBox.on("focus", () => {
+  asciiBox.getWrapperElement().classList.add("cm-editor-active");
+  unicodeBox.getWrapperElement().classList.remove("cm-editor-active");
+});
+
+// Remove highlight if both lose focus (optional)
+[unicodeBox, asciiBox].forEach(editor => {
+  editor.on("blur", () => {
+    setTimeout(() => {
+      if (
+        !document.activeElement.closest(".CodeMirror")
+      ) {
+        editor.getWrapperElement().classList.remove("cm-editor-active");
+      }
+    }, 100);
+  });
+});
+
 
     // Copy buttons
     async function copyToClipboard(target) {
