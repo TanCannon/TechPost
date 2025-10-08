@@ -391,6 +391,11 @@ def generateZip():
 
     return render_template("generateZip.html", params=params)
 
+#route to legal pages /privacy, /terms, /disclaimer and /faq
+@app.route("/privacy", methods=["GET"])
+def privacy():
+    return render_template("privacy.html",params=params)
+
 # Custom 404 error handler
 @app.errorhandler(404)
 def notFound(request):
