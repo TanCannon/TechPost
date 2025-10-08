@@ -314,8 +314,7 @@ def home():
     return render_template('index.html',params= params,posts=posts, prev=prev, next=next)#params=params passing data mentioned in config.json to be used for the link in <a href>
 #------------------------------------------------------------------------------------------#
 
-# http://127.0.0.1:5000/about
-
+# http://127.0.0.1:5000/blog/...
 @app.route("/blog/<string:post_slug>",methods=['GET'])
 # https://www.codewithharry.com/videos/web-dev-using-flask-and-python-1/ , "/web-dev-using-flask-and-python-1/" HERE THIS IS A SLUG
 def post_route(post_slug):
@@ -328,7 +327,7 @@ def post_route(post_slug):
 def about():
     return render_template('about.html',params= params) #params=params passing data mentioned in config.json
 
-# http://127.0.0.1:5000/bootstrap
+# http://127.0.0.1:5000/contact
 @app.route("/contact", methods = ['GET', 'POST'])
 def contact():
     sendStatus = {'val': 0}
@@ -369,7 +368,8 @@ def contact():
     return render_template('contact.html',params= params, sendStatus = sendStatus)#params=params passing data mentioned in config.json
 
 # route for the "ascii tree to zip" feature page
-@app.route("/ascii-tree-to-zip", methods=["GET", "POST"])
+#needed to use endpoint as route name and function name do not match
+@app.route("/tools/ascii-tree-to-zip", endpoint="ascii-tree-to-zip", methods=["GET", "POST"])
 def generateZip():
     if request.method == "POST":
         ascii_tree = request.form.get("unicodeContent")
@@ -391,10 +391,11 @@ def generateZip():
 
     return render_template("generateZip.html", params=params)
 
-#route to legal pages /privacy, /terms, /disclaimer and /faq
-@app.route("/privacy", methods=["GET"])
-def privacy():
-    return render_template("privacy.html",params=params)
+# http://127.0.0.1:5000/tools
+#curretly one tools is avalable so im redirecting
+@app.route("/tools")
+def tools():
+    return redirect(url_for("ascii-tree-to-zip"))
 
 # Custom 404 error handler
 @app.errorhandler(404)
