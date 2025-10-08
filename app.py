@@ -397,6 +397,23 @@ def generateZip():
 def tools():
     return redirect(url_for("ascii-tree-to-zip"))
 
+#route to legal pages /privacy, /terms, /disclaimer and /faq
+@app.route("/privacy", methods=["GET"])
+def privacy():
+    return render_template("privacy.html",params=params)
+
+@app.route("/terms", methods=["GET"])
+def terms():
+    return render_template("terms.html",params=params)
+
+@app.route("/disclaimer", methods=["GET"])
+def disclaimer():
+    return render_template("disclaimer.html",params=params)
+
+@app.route("/faq", methods=["GET"])
+def faq():
+    return render_template("faq.html",params=params)
+
 # Custom 404 error handler
 @app.errorhandler(404)
 def notFound(request):

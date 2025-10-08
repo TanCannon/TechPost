@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+
+{% block page_style %}{{url_for('static', filename='css/about.css')}}{% endblock page_style %}
+{% block title %}
+    Disclaimer | {{ params['website_name'] }}
+{% endblock %}
+
+{% block body %}
+
+<!-- Page Header-->
+<header class="masthead"
+    style="background-image: url('{{url_for('static', filename='assets/img/about-bg.jpg')}}')">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="page-heading">
+                    <h1>Disclaimer</h1>
+                    <span class="subheading">Last Updated: October 2025</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- Main Content-->
+<main class="mb-4">
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="container">
+                    <!--<h1>Disclaimer</h1>-->
+
+                    <p style="text-align: justify;">The information provided on <strong>{{params['website_name'] }}</strong> is for educational and informational purposes only. While we strive for accuracy, we make no representations or warranties about the completeness or reliability of the content.</p>
+
+                    <h2>1. Technical and Tool Disclaimer</h2>
+                    <p style="text-align: justify;">The tools provided on <strong>{{params['website_name'] }}</strong> are experimental utilities created for learning and convenience. Results or outputs are not guaranteed to be accurate for professional use.</p>
+
+                    <h2>2. No Professional Advice</h2>
+                    <p style="text-align: justify;">Content on <strong>{{params['website_name'] }}</strong> should not be taken as professional, medical, financial, or legal advice. Always consult a qualified expert before making decisions based on the information found here.</p>
+
+                    <h2>3. External Links</h2>
+                    <p style="text-align: justify;">We may link to third-party resources; however, we do not control or endorse their content or privacy practices.</p>
+
+                    <h2>4. Limitation of Liability</h2>
+                    <p style="text-align: justify;">Under no circumstances shall <strong>Tanmaya Kumar Naik</strong> be liable for any damages or losses arising from use of the information or tools provided on this website.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    </main>
+{% endblock %}
