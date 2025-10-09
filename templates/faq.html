@@ -1,9 +1,28 @@
 {% extends "layout.html" %}
 
-{% block page_style %}{{url_for('static', filename='css/about.css')}}{% endblock page_style %}
+{% set fname =  "assets/img/about-bg.jpg" %}
+{% set ftitle = "FAQ | " ~ params['website_name'] %}
+{% set fdescription =  "Get help using " ~ params['website_name'] ~ " tools and learn about our policies, privacy, and updates. Frequently asked questions answered." %}
+
 {% block title %}
-    Frequently Asked Questions | {{ params['website_name'] }}
+{{ftitle}}
 {% endblock %}
+
+{% block meta_description %}
+{{fdescription}}
+{% endblock %}
+
+{% block og_title %}{{ftitle}}{% endblock %}
+{% block og_description %}{{ fdescription }}{% endblock %}
+{% block og_image %}{{ url_for('static',filename=fname, _external=True)}}{% endblock %}
+
+{% block twitter_title %}{{ ftitle }}{% endblock %}
+{% block twitter_description %}{{ fdescription }}{% endblock %}
+{% block twitter_image %}{{ url_for('static',filename=fname,  _external=True)}}{% endblock %}
+
+{% block page_style %}
+{{url_for('static', filename='css/about.css')}}
+{% endblock page_style %} 
 
 {% block body %}
 
