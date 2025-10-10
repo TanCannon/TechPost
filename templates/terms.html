@@ -24,6 +24,35 @@
 {{url_for('static', filename='css/about.css')}}
 {% endblock page_style %}  
 
+{%block add_headers%}
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@graph": [
+                {
+                    "@type": "BreadcrumbList",
+                    "@id": "{{ request.base_url }}#breadcrumb",
+                    "itemListElement": [
+                        {"@type": "ListItem","position": 1,"name": "Home","item": "https://tancannon2003.pythonanywhere.com/"},
+                        {"@type": "ListItem","position": 2,"name": "Terms and Conditions","item": "{{ request.url }}"}
+                    ]
+                },
+                {
+                    "@type": "WebPage",
+                    "@id": "{{ request.base_url }}#terms",
+                    "url": "{{ request.url }}",
+                    "name": "Terms and Conditions",
+                    "description": "Read the terms and conditions governing the use of {{params["website_name"]}} and its services.",
+                    "isPartOf": {"@id": "https://tancannon2003.pythonanywhere.com/#website"},
+                    "publisher": {"@id": "https://tancannon2003.pythonanywhere.com/#organization"},
+                    "inLanguage": "en"
+                }
+            ]
+        }
+    </script>
+
+{%endblock add_headers%}
+
 {% block body %}
 
 <!-- Page Header-->

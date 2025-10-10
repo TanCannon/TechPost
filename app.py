@@ -313,6 +313,10 @@ def home():
 
     return render_template('index.html',params= params,posts=posts, prev=prev, next=next)#params=params passing data mentioned in config.json to be used for the link in <a href>
 #------------------------------------------------------------------------------------------#
+# http://127.0.0.1:5000/blog
+@app.route("/blog", methods=["GET"])
+def blog():
+    return redirect("/")
 
 # http://127.0.0.1:5000/blog/...
 @app.route("/blog/<string:post_slug>",methods=['GET'])

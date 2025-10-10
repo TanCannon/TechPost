@@ -2,6 +2,35 @@
 
 {% block page_style %}{{url_for('static', filename='css/contact.css')}}{% endblock page_style %}
 
+{%block add_headers%}
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@graph": [
+                {
+                    "@type": "BreadcrumbList",
+                    "@id": "{{ request.base_url }}#breadcrumb",
+                    "itemListElement": [
+                        {"@type": "ListItem","position": 1,"name": "Home","item": "https://tancannon2003.pythonanywhere.com/"},
+                        {"@type": "ListItem","position": 2,"name": "Contact","item": "{{ request.url }}"}
+                    ]
+                },
+                {
+                    "@type": "ContactPage",
+                    "@id": "{{ request.base_url }}#contact",
+                    "url": "{{ request.url }}",
+                    "name": "Contact TechPost",
+                    "description": "Reach out to TechPost for inquiries, feedback, or collaborations.",
+                    "isPartOf": {"@id": "https://tancannon2003.pythonanywhere.com/#website"},
+                    "publisher": {"@id": "https://tancannon2003.pythonanywhere.com/#organization"},
+                    "inLanguage": "en"
+                }
+            ]
+        }
+    </script>
+
+{%endblock add_headers%}
+
 {% block body %}
         <!-- Page Header-->
         <header class="masthead" style="background-image: url('{{url_for('static', filename='assets/img/contact-bg.jpg')}}')">

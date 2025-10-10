@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 
-{% block title %}Home | {{ params['website_name'] }}{% endblock %}
+{% block title %}{{ params['website_name'] }} | Home{% endblock %}
 {% block meta_description %}{{params['website_description'] }}{% endblock %}
 
 {% block og_title %}{{''}}{% endblock %}
@@ -13,6 +13,70 @@
 {% block twitter_image %}{{ url_for('static',filename='assets/img/home-bg.jpg',  _external=True)}}{% endblock %}
 
 {% block page_style %}{{url_for('static', filename='css/index.css')}}{% endblock page_style %}
+
+{%block add_headers%}
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@graph": [
+
+                {
+                    "@type": "BreadcrumbList",
+                    "@id": "{{ request.base_url }}#breadcrumb",
+                    "itemListElement": [
+                        {
+                            "@type": "ListItem",
+                            "position": 1,
+                            "name": "Home",
+                            "item": "https://tancannon2003.pythonanywhere.com/"
+                        }
+                    ]
+                },
+
+                {
+                    "@type": "WebPage",
+                    "@id": "{{ request.base_url }}#home",
+                    "url": "{{ request.url }}",
+                    "name": "{{ params['website_name'] }} - Home",
+                    "description": "Explore {{ params['website_name'] }} – a blog and tool hub by Tanmaya Kumar Naik, covering the latest in technology, software development, and automation. Discover insightful articles and free online tools.",
+                    "isPartOf": { "@id": "https://tancannon2003.pythonanywhere.com/#website" },
+                    "publisher": { "@id": "https://tancannon2003.pythonanywhere.com/#organization" },
+                    "inLanguage": "en",
+                    "primaryImageOfPage": {
+                        "@type": "ImageObject",
+                        "url": "https://tancannon2003.pythonanywhere.com/static/favicon.ico",
+                        "width": 512,
+                        "height": 512
+                    },
+                    "potentialAction": {
+                        "@type": "SearchAction",
+                        "target": "https://tancannon2003.pythonanywhere.com/search?q={search_term_string}",
+                        "query-input": "required name=search_term_string"
+                    }
+                },
+
+                {
+                    "@type": "ItemList",
+                    "@id": "{{ request.base_url }}#featured-content",
+                    "name": "Featured Posts and Tools",
+                    "description": "A curated list of featured blog posts and online tools available on {{ params['website_name'] }}.",
+                    "itemListElement": [
+                        {% for post in posts[:5] %}
+                        {
+                            "@type": "ListItem",
+                            "position": {{ loop.index }},
+                            "url": "https://tancannon2003.pythonanywhere.com/blog/{{ post.slug }}",
+                            "name": "{{ post.title | e }}"
+                        }{% if not loop.last %},{% endif %}
+                        {% endfor %}
+                    ]
+                }
+
+            ]
+        }
+    </script>
+
+{%endblock add_headers%}
 
 {% block body %}
         <!-- Page Header-->

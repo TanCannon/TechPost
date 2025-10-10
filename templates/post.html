@@ -21,37 +21,39 @@
 
 {%block add_headers%}
     <script type="application/ld+json">
-    {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "headline": "{{ post.title | e }}",
-    "alternativeHeadline": "{{ post.tag_line | e }}",
-    "description": "{{ post.description | e }}",
-    "image": "{{ url_for('static', filename="assets/img/"+post.img_file, _external=True) }}",
-    "author": {
-        "@type": "Person",
-        "name": "Tanmaya Kumar Naik",
-        "url": "{{ url_for('home', _external=True) }}about"
-    },
-    "publisher": {
-        "@type": "Organization",
-        "name": "Tan's Blogpost",
-        "logo": {
-        "@type": "ImageObject",
-        "url": "{{ url_for('static', filename='favicon.ico', _external=True) }}"
+        {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "@id": "https://tancannon2003.pythonanywhere.com/blog/{{ post.slug | e }}#blogpost",
+        "headline": "{{ post.title | e }}",
+        "alternativeHeadline": "{{ post.tag_line | e }}",
+        "description": "{{ post.description | striptags | truncate(200) | e }}",
+        "image": "{{ url_for('static', filename=fname, _external=True) }}",
+        "author": {
+            "@type": "Person",
+            "name": "Tanmaya Kumar Naik",
+            "url": "https://tancannon2003.pythonanywhere.com/about"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "@id": "https://tancannon2003.pythonanywhere.com/#organization",
+            "name": "{{params["website_name"]}}",
+            "logo": {
+            "@type": "ImageObject",
+            "url": "{{ url_for('static', filename='favicon.ico', _external=True) }}"
+            }
+        },
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "{{ request.url }}"
+        },
+        "articleSection": "Technology",
+        "keywords": "{{ post.tag_line | e }}",
+        "articleBody": "{{ post.content | striptags | truncate(400) | replace('\n', ' ') | e }}",
+        "datePublished": "{{ post.date }}",
+        "dateModified": "{{ post.last_modified if post.last_modified else post.date }}"
         }
-    },
-    "mainEntityOfPage": {
-        "@type": "WebPage",
-        "@id": "{{ request.url }}"
-    },
-    "articleBody": "{{ post.content[:400] | striptags | e }}",
-    "keywords": "{{ post.tag_line | e }}",
-    "genre": "Technology",
-    "datePublished": "{{ post.date }}",
-    "dateModified": "{{ post.last_modified if post.last_modified else post.date }}"
-    }
-</script>
+    </script>
 
 {%endblock add_headers%}
 

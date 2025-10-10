@@ -54,8 +54,74 @@
     <!-- Core theme CSS -->
     <link href="{% block page_style %}{% endblock page_style %}" rel="stylesheet" />
 
+    <!-- Global Structured Data -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@graph": [
+
+                {
+                "@type": "Organization",
+                "@id": "https://tancannon2003.pythonanywhere.com/#organization",
+                "name": "TechPost",
+                "alternateName": "ShopNBlog",
+                "url": "https://tancannon2003.pythonanywhere.com/",
+                "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://tancannon2003.pythonanywhere.com/static/favicon.ico",
+                    "width": 512,
+                    "height": 512
+                },
+                "sameAs": [
+                    "https://github.com/TanCannon",
+                    "https://www.linkedin.com/in/tanmaya-kumar-naik/"
+                ],
+                "contactPoint": {
+                    "@type": "ContactPoint",
+                    "contactType": "Customer Support",
+                    "email": "tanmayakumarnaik2003@gmail.com"
+                },
+                "founder": {
+                    "@type": "Person",
+                    "name": "Tanmaya Kumar Naik",
+                    "url": "https://tancannon2003.pythonanywhere.com/about",
+                    "jobTitle": "Software Developer"
+                }
+                },
+
+                {
+                "@type": "WebSite",
+                "@id": "https://tancannon2003.pythonanywhere.com/#website",
+                "url": "https://tancannon2003.pythonanywhere.com/",
+                "name": "{{params["website_name"]}}",
+                "alternateName": "{{params["website_name"]}}",
+                "publisher": { "@id": "https://tancannon2003.pythonanywhere.com/#organization" },
+                "inLanguage": "en",
+                "potentialAction": {
+                    "@type": "SearchAction",
+                    "target": "https://tancannon2003.pythonanywhere.com/search?q={search_term_string}",
+                    "query-input": "required name=search_term_string"
+                }
+                },
+
+                {
+                "@type": "WebPage",
+                "@id": "{{ request.base_url }}#webpage",
+                "url": "{{ request.base_url }}",
+                "name": "{{params["website_name"]}}",
+                "isPartOf": { "@id": "https://tancannon2003.pythonanywhere.com/#website" },
+                "inLanguage": "en"
+                }
+
+            ]
+        }
+    </script>
+
+
     <!--add any required headers-->
     {%block add_headers%}{%endblock add_headers%}
+
+
 </head>
 <body>
     <!-- Navigation-->
