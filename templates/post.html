@@ -1,7 +1,9 @@
 {% extends "layout.html" %}
 
 {%if post.img_file != ''%} <!--handel image file name is not given-->
-    {% set fname = 'assets/img/'+ post.img_file %} <!---created a jinger variable to be able to change the bg image-->
+    {% set fname_full = 'assets/img/'+ post.img_file %} <!---created a jinger variable to be able to change the bg image-->
+    {% set fname_parts = post.img_file.rsplit('.', 1) %}
+    {% set fname = 'assets/img/' + fname_parts[0] %}
 {%else%}
     {% set fname =  'assets/img/default-thumbnail.jpg' %}
 {% endif %}
@@ -60,7 +62,27 @@
 {% block body %}
         
         <!-- Page Header-->
-        <header class="masthead" style="background-image: url('{{url_for('static',filename=fname)}}')">
+        <header class="masthead">
+             <picture>
+    <!-- Modern WebP -->
+    <source srcset="{{ url_for('static', filename=fname + '-400.webp') }} 400w,
+                    {{ url_for('static', filename=fname + '-800.webp') }} 800w,
+                    {{ url_for('static', filename=fname + '-1200.webp') }} 1200w"
+            type="image/webp">
+    <!-- Fallback JPEG -->
+    <source srcset="{{ url_for('static', filename=fname + '-400.jpg') }} 400w,
+                    {{ url_for('static', filename=fname + '-800.jpg') }} 800w,
+                    {{ url_for('static', filename=fname + '-1200.jpg') }} 1200w"
+            type="image/jpeg">
+    <!-- Default -->
+    <img src="{{ url_for('static', filename=fname + '-800.jpg') }}"
+         sizes="(max-width: 600px) 400px,
+                (max-width: 1024px) 800px,
+                1200px"
+         alt="{{ post.title }}"
+         class="header-img"
+         fetchpriority="high">
+  </picture>
             <div class="container position-relative px-4 px-lg-5">
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-md-10 col-lg-8 col-xl-7">
