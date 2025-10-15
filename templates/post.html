@@ -22,6 +22,17 @@
 {% block page_style %}{{url_for('static', filename='css/post.css')}}{% endblock page_style %}
 
 {%block add_headers%}
+    <link 
+    rel="preload" 
+    as="image" 
+    imagesrcset="
+        {{ url_for('static', filename=fname + '-400.webp') }} 400w,
+        {{ url_for('static', filename=fname + '-800.webp') }} 800w,
+        {{ url_for('static', filename=fname + '-1200.webp') }} 1200w"
+    imagesizes="100vw"
+    fetchpriority="high"
+    type="image/webp">
+
     <script type="application/ld+json">
         {
         "@context": "https://schema.org",
@@ -61,28 +72,35 @@
 
 {% block body %}
         
-        <!-- Page Header-->
-        <header class="masthead">
-             <picture>
-    <!-- Modern WebP -->
-    <source srcset="{{ url_for('static', filename=fname + '-400.webp') }} 400w,
-                    {{ url_for('static', filename=fname + '-800.webp') }} 800w,
-                    {{ url_for('static', filename=fname + '-1200.webp') }} 1200w"
-            type="image/webp">
-    <!-- Fallback JPEG -->
-    <source srcset="{{ url_for('static', filename=fname + '-400.jpg') }} 400w,
-                    {{ url_for('static', filename=fname + '-800.jpg') }} 800w,
-                    {{ url_for('static', filename=fname + '-1200.jpg') }} 1200w"
-            type="image/jpeg">
-    <!-- Default -->
-    <img src="{{ url_for('static', filename=fname + '-800.jpg') }}"
-         sizes="(max-width: 600px) 400px,
-                (max-width: 1024px) 800px,
-                1200px"
-         alt="{{ post.title }}"
-         class="header-img"
-         fetchpriority="high">
-  </picture>
+    <!-- Page Header-->
+    <header class="masthead">
+        <picture>
+            <!-- Modern WebP -->
+            <source 
+                srcset="{{ url_for('static', filename=fname + '-400.webp') }} 400w,
+                        {{ url_for('static', filename=fname + '-800.webp') }} 800w,
+                        {{ url_for('static', filename=fname + '-1200.webp') }} 1200w"
+                sizes="100vw"
+                type="image/webp">
+
+            <!-- JPEG fallback -->
+            <source 
+                srcset="{{ url_for('static', filename=fname + '-400.jpg') }} 400w,
+                        {{ url_for('static', filename=fname + '-800.jpg') }} 800w,
+                        {{ url_for('static', filename=fname + '-1200.jpg') }} 1200w"
+                sizes="100vw"
+                type="image/jpeg">
+
+            <!-- Default fallback -->
+            <img 
+                src="{{ url_for('static', filename=fname + '-800.jpg') }}"
+                sizes="100vw"
+                alt="{{ post.title }}"
+                class="header-img"
+                fetchpriority="high"
+                decoding="async"
+                loading="eager">
+        </picture>
             <div class="container position-relative px-4 px-lg-5">
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-md-10 col-lg-8 col-xl-7">

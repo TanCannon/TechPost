@@ -15,6 +15,8 @@ import tempfile
 import zipfile
 from werkzeug.utils import secure_filename
 import math
+from PIL import Image
+from flask_compress import Compress
 
 '''we can use the json file here to add our own parameters'''
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -25,6 +27,7 @@ with open(config_path,'r') as c: #reading from json file the urls
 
 local_server = params["local_server"]
 app = Flask(__name__)
+Compress(app) #it will compress text responses (HTML, CSS, JS, JSON, etc.) 
 app.secret_key = 'supersecretkey' #kuch bhi rakh skte ho
 app.config['UPLOAD_FOLDER'] = params['upload_location']
 #setting up email notification////
@@ -61,6 +64,17 @@ app.config['CKEDITOR_FILE_UPLOADER'] = 'uploader'  # upload endpoint
 # )
 # mail = Mail(app)
 #-----------------------------------------#
+
+# Add webp mimetype if missing
+import mimetypes
+mimetypes.add_type('image/webp', '.webp')
+
+# Define sizes and formats
+SIZES = [400, 800, 1200]  # px width
+FORMATS = ["webp", "jpg"]  # webp first, jpg fallback
+
+# Define restricted URLs that should not be included in the sitemap
+EXCLUDED_ROUTES = {'/dashboard', '/uploader', '/logout'}
 
 #----------connecting to the sqlachemy database--------#
 if (local_server):
@@ -167,8 +181,34 @@ def zip_folder(folder_path, zip_path):
                 arcname = os.path.relpath(file_path, folder_path)  # relative path in zip
                 zipf.write(file_path, arcname)
 
-# Define restricted URLs that should not be included in the sitemap
-EXCLUDED_ROUTES = {'/dashboard', '/uploader', '/logout'}
+def save_responsive_images(image_file, output_dir, basename):
+    """
+    Generates multiple sizes in WebP and JPG for an uploaded image.
+    """
+    img = Image.open(image_file)
+    img = img.convert("RGB")  # Ensure consistent format
+
+    os.makedirs(output_dir, exist_ok=True)
+    saved_files = []
+
+    for size in SIZES:
+        # Calculate height to keep aspect ratio
+        ratio = size / img.width
+        height = int(img.height * ratio)
+        resized = img.resize((size, height), Image.Resampling.LANCZOS)
+
+        for fmt in FORMATS:
+            filename = f"{basename}-{size}.{fmt}"
+            path = os.path.join(output_dir, filename)
+            if fmt == "webp":
+                resized.save(path, "WEBP", quality=80, optimize=True)
+            else:
+                resized.save(path, "JPEG", quality=85, optimize=True)
+            saved_files.append(filename)
+
+    return saved_files
+
+
 
 # Sitemap route
 @app.route('/sitemap.xml')
@@ -217,7 +257,11 @@ def uploader():
     if 'user' in session and session['user'] == params['admin_name']:
         if (request.method == 'POST'):
             f = request.files['file1']
-            f.save(os.path.join(app.config['UPLOAD_FOLDER'],secure_filename(f.filename)))
+            src_path = os.path.join(app.config['UPLOAD_FOLDER'],secure_filename(f.filename))
+            f.save(src_path)
+
+            base_name, ext = os.path.splitext(f.filename)
+            save_responsive_images(src_path, app.config['UPLOAD_FOLDER'], base_name)
             # Return JSON for CKEditor to insert image
             url = url_for('static', filename=f"uploads/{f.filename}")
             # return {"uploaded": 1, "fileName": f.filename, "url": url}
