@@ -11,6 +11,7 @@ Disallow: /static/     # block raw static folder by default
 Allow: /static/css/
 Allow: /static/js/
 Allow: /static/assets/
+Allow: /static/favicon.ico
 
 # Sitemap location
 Sitemap: https://tancannon2003.pythonanywhere.com/sitemap.xml
