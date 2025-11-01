@@ -18,6 +18,8 @@ import math
 from PIL import Image
 from flask_compress import Compress
 
+from helper import utils
+
 '''we can use the json file here to add our own parameters'''
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 config_path = os.path.join(BASE_DIR, "config.json")
@@ -367,9 +369,13 @@ def blog():
 # https://www.codewithharry.com/videos/web-dev-using-flask-and-python-1/ , "/web-dev-using-flask-and-python-1/" HERE THIS IS A SLUG
 def post_route(post_slug):
     post = Posts.query.filter_by(slug=post_slug).first() #fetching data form dbms as a dictionary, i have used this to show in post.html
+
+    # Generate safe IDs and TOC
+    clean_html, toc = utils.generate_toc_and_clean_html(post.content)
+
     if not post:
         abort(404)  # Return proper 404 instead of 500
-    return render_template('post.html',params= params,post=post)#params=params passing data mentioned in config.json
+    return render_template('post.html',params= params,post=post, content=clean_html, toc = toc)#params=params passing data mentioned in config.json
 
 @app.route("/about")
 def about():
