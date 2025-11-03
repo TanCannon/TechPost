@@ -712,7 +712,9 @@ button:not(:disabled),
 .text-uppercase {
   text-transform: uppercase !important;
 }
-
+.text-responsive {
+    font-size: clamp(0.7rem, 2vw, 1.2rem);
+}
 /* rtl:begin:remove */
 
 /* rtl:end:remove */
@@ -908,7 +910,7 @@ header.masthead .site-heading .h1 {
 
 @media screen and (max-width:411px){
   #copy-right-label{
-    font-size: 0.7em;
+    font-size: 0.6em;
   }
   .nav-button{
     font-size: 0.5em;
