@@ -712,11 +712,9 @@ button:not(:disabled),
 .text-uppercase {
   text-transform: uppercase !important;
 }
-
-.text-responsive{
-  font-size: clamp(0.9rem, 2vw, 1.2rem)
+.text-responsive {
+    font-size: clamp(0.7rem, 2vw, 1.2rem);
 }
-
 /* rtl:begin:remove */
 
 /* rtl:end:remove */
