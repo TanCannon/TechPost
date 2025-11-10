@@ -1,0 +1,231 @@
+{% extends "layout.html" %}
+
+
+{% set fname = "assets/img/character-counter-thumbnail.jpg" %}
+{% set ftitle = "Character Counter | Free Online Character & Word Count Tool" %}
+{% set fdescription = "Use our free Character Counter tool to count characters, words, sentences, and spaces instantly. Ideal for writers, students, and developers who need quick and accurate text statistics." %}
+{% set ftagline = "Count characters, words, sentences, and spaces — instantly and accurately." %}
+
+
+
+{% block title %}
+{{ftitle}}
+{% endblock %}
+
+{% block meta_description %}
+{{fdescription}}
+{% endblock %}
+
+{% block og_title %}{{ftitle}}{% endblock %}
+{% block og_description %}{{ fdescription }}{% endblock %}
+{% block og_image %}{{ url_for('static',filename=fname, _external=True)}}{% endblock %}
+
+{% block twitter_title %}{{ ftitle }}{% endblock %}
+{% block twitter_description %}{{ fdescription }}{% endblock %}
+{% block twitter_image %}{{ url_for('static',filename=fname,  _external=True)}}{% endblock %}
+
+{% block page_style %}
+{{url_for('static', filename='css/generateZip.css')}}
+{% endblock page_style %}
+
+{%block add_headers%} 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.css" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/theme/material.css" media="print" onload="this.media='all'">
+
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/javascript/javascript.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/display/placeholder.js" defer></script>
+
+{% endblock %}
+
+{% block body %}
+   <header class="masthead" style="background-image: url('{{url_for('static', filename='assets/img/asciitree.png')}}')">
+    <div class="container position-relative px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="post-heading">
+                            <!-- <h1>Man must explore, and this is exploration at its greatest</h1> -->
+                            <!-- i accssing these lines from python file in post_rout() -->
+                            <h1>{{ftitle}}</h1>
+                            <h2 class="subheading">{{ftagline}}</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+   </header>
+    <!--main content-->
+    <div id="dualeditor">
+        <div class="editor">
+            <div class="editor-label">
+                <span>Unicode Style</span>
+                <button class="copy-btn" data-target="unicodeEditor">Copy</button>
+            </div>
+            <div id="unicodeEditor" class="autoresizeeditor"></div>
+        </div>
+    </div> 
+    <div class="center-content-h">
+        <div id="metrics-list">
+            <div class="btn btn-primary mt-2">Characters: <span id="charVal">0</span></div>
+            <div class="btn btn-primary mt-2">Spaces: <span id="spaceVal">0</span></div>
+            <div class="btn btn-primary mt-2">Words: <span id="wordVal">0</span></div>
+            <div class="btn btn-primary mt-2">Sentences: <span id="sentenceVal">0</span></div>
+            <div class="btn btn-primary mt-2">Paragraphs: <span id="paragraphVal">0</span></div>
+            <div class="btn btn-primary mt-2">Reading Time: <span id="readingVal">0 sec</span></div>
+        </div>   
+    </div>
+    <div class="center-content-h" id="center-user-guide">
+        <section id="quick-start" class="editor-help">
+            <p class="blurb">
+                <strong>Quick Start:</strong>
+                Type your folder tree in the <em>ASCII editor</em> (keyboard symbols: <code>|</code>, <code>-</code>, <code>`</code>)
+                or paste an existing Unicode tree in the <em>Unicode editor</em>. Both editors sync and preview each other.
+                When ready, click <strong>Generate ZIP</strong> to download your folder structure as real folders.
+            </p>
+        </section>
+
+        <section id="detailed-guide" class="editor-help">
+            <h2>How to Use the Editors</h2>
+            <p>This platform provides <strong>two editors</strong> to help you create, paste, or edit folder tree structures and convert them into real folders.</p>
+
+            <h3>1. ASCII Editor (Recommended)</h3>
+            <p>Use the ASCII editor if you are <strong>typing</strong> your folder structure. It supports only symbols available on your keyboard: <code>|</code>, <code>-</code>, <code>`</code>.</p>
+            <pre aria-label="ASCII example" class="example">
+            project/
+            |-- src/
+            |   |-- main.py
+            |   `-- utils.py
+            `-- README.md</pre>
+
+            <h3>2. Unicode Editor</h3>
+            <p>Use the Unicode editor if you are <strong>pasting</strong> a folder structure written with Unicode tree symbols.</p>
+            <pre aria-label="Unicode example" class="example">
+            project/
+            ├─ docs/
+            ├─ src/
+            │  ├─ main.py
+            │  └─ utils.py
+            └─ README.md</pre>
+
+            <h3>3. Edit in Either Format</h3>
+            <p>Both editors are <strong>linked</strong>: you can type in ASCII and see the Unicode preview, or paste in Unicode and refine it in ASCII.</p>
+
+            <h3>4. Generate and Download</h3>
+            <p>Review your structure for accuracy. Click <strong>“Generate ZIP”</strong> to create and download your folder structure as a real, ready-to-use ZIP file.</p>
+
+            <p class="pro-tip"><strong>💡 Pro Tip:</strong> Use this tool in your documentation or workflow to quickly turn ASCII or Unicode folder trees into real project folders—perfect for sharing setups, tutorials, or boilerplates.</p>
+        </section>
+    </div>
+
+<script>
+
+    function debounce(fn, delay) {
+        let timer;
+        return function(...args) {
+            clearTimeout(timer);
+            timer = setTimeout(() => fn.apply(this, args), delay);
+        };
+    }
+
+    function analyzeText(text) {
+        // Trim just for clean calculations
+        const trimmed = text.trim();
+
+        const characters = text.length;
+        const spaces = (text.match(/ /g) || []).length;
+
+        const words = trimmed ? trimmed.split(/\s+/).length : 0;
+
+        const sentences = trimmed ? (trimmed.match(/[.!?]+/g) || []).length : 0;
+
+        // Paragraphs = blocks of text separated by blank lines
+        const paragraphs = trimmed ? trimmed.split(/\n\s*\n/).length : 0;
+
+        // Average reading speed: ~200 words per minute
+        const readingTimeMinutes = words / 200;
+        const readingTime = readingTimeMinutes < 1
+            ? `${Math.ceil(readingTimeMinutes * 60)} sec`
+            : `${readingTimeMinutes.toFixed(1)} min`;
+
+        return {
+            characters,
+            spaces,
+            words,
+            sentences,
+            paragraphs,
+            readingTime
+        };
+    }
+
+    //wrapping inside window event to wait for js for CodeMirror to load.    
+    window.addEventListener("DOMContentLoaded", () => {
+        // Create editors
+        const unicodeBox = CodeMirror(document.getElementById("unicodeEditor"), {
+            lineNumbers: true,
+            lineWrapping: true,
+            mode: "text/plain",
+            theme: "material",
+            value: "",
+            placeholder: "├─, └─, │ style tree..."
+        });
+
+
+        const handleUnicode = debounce((instance, changeObj) => {
+            const stats = analyzeText(unicodeBox.getValue());
+            //console.log(stats);
+            document.getElementById("charVal").textContent = stats.characters;
+            document.getElementById("spaceVal").textContent = stats.spaces;
+            document.getElementById("wordVal").textContent = stats.words;
+            document.getElementById("sentenceVal").textContent = stats.sentences;
+            document.getElementById("paragraphVal").textContent = stats.paragraphs;
+            document.getElementById("readingVal").textContent = stats.readingTime;
+        }, 300);
+
+
+        unicodeBox.on("change", handleUnicode);
+
+        // Highlight on focus
+        unicodeBox.on("focus", () => {
+        unicodeBox.getWrapperElement().classList.add("cm-editor-active");
+        });
+
+
+        // Remove highlight if both lose focus (optional)
+        [unicodeBox].forEach(editor => {
+        editor.on("blur", () => {
+            setTimeout(() => {
+            if (
+                !document.activeElement.closest(".CodeMirror")
+            ) {
+                editor.getWrapperElement().classList.remove("cm-editor-active");
+            }
+            }, 100);
+        });
+        });
+
+        // Copy buttons
+        async function copyToClipboard(target) {
+            const text = (target === "unicodeEditor")
+                ? unicodeBox.getValue()
+                : asciiBox.getValue();
+
+            try {
+                await navigator.clipboard.writeText(text);
+            } catch (err) {
+                console.error("Failed to copy:", err);
+                alert("Failed to copy");    
+            }
+        }
+
+        //copy buttons
+        document.querySelectorAll(".copy-btn").forEach(btn => {
+            btn.addEventListener("click", () => {
+                const target = btn.getAttribute("data-target");
+                copyToClipboard(target);
+                btn.textContent = "Copied!";
+                setTimeout(() => btn.textContent = "Copy", 1200);
+            });
+        });
+    });
+</script>
+    
+{% endblock %}

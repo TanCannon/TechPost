@@ -421,6 +421,12 @@ def contact():
         # return render_template('index.html',params=params)
     return render_template('contact.html',params= params, sendStatus = sendStatus)#params=params passing data mentioned in config.json
 
+# route for the "character counter" feature page
+@app.route("/tools/character-counter", endpoint="character-counter", methods=["GET", "POST"])
+def chracterCounter():
+    return render_template("characterCounter.html", params=params)
+
+
 # route for the "ascii tree to zip" feature page
 #needed to use endpoint as route name and function name do not match
 @app.route("/tools/ascii-tree-to-zip", endpoint="ascii-tree-to-zip", methods=["GET", "POST"])
