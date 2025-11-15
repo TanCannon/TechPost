@@ -36,9 +36,53 @@
 <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/javascript/javascript.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/display/placeholder.js" defer></script>
 
+<script src="{{ url_for('static', filename='js/mydropdown.js') }}" defer></script>
+<link rel="stylesheet" href="{{url_for('static', filename='css/mydropdown.css')}}">
+
 {% endblock %}
 
 {% block body %}
+<template id="preference-template">
+    <div class="list-items border-bottom">
+        <p class="item-name" data-type="">Preference</p>
+        <button class="delete-preference">-</button>
+        <button class="edit-preference">/</button>
+    </div>
+</template>
+
+<template id="edit-template">
+  <div class="dropdown-content submenu" id="submenu">
+    <button class="back-btn">⬅ Back</button>
+    <p id="item-name"><strong>Preference 1 Edit</strong></p>
+    <form id="optionsForm" class="options-form">
+        <label for="Characters">Characters:</label>
+        <input type="number" id="ccmin" name="ccmin" min="0" step="1" placeholder="min" value="0">
+        <input type="number" id="ccmax" name="ccmax" min="0" step="1" placeholder="max" value="1">
+
+        <label for="Words">Words:</label>
+        <input type="number" id="wcmin" name="wcmin" min="0" step="1" placeholder="min" value="0">
+        <input type="number" id="wcmax" name="wcmax" min="0" step="1" placeholder="max" value="1">
+
+        <label for="Spaces">Spaces:</label>
+        <input type="number" id="scmin" name="scmin" min="0" step="1" placeholder="min" value="0">
+        <input type="number" id="scmax" name="scmax" min="0" step="1" placeholder="max" value="1">
+
+        <label for="Sentences">Sentences:</label>
+        <input type="number" id="stcmin" name="stcmin" min="0" step="1" placeholder="min" value="0">
+        <input type="number" id="stcmax" name="stcmax" min="0" step="1" placeholder="max" value="1">
+
+        <label for="Paragraphs">Paragraphs:</label>
+        <input type="number" id="pcmin" name="pcmin" min="0" step="1" placeholder="min" value="0">
+        <input type="number" id="pcmax" name="pcmax" min="0" step="1" placeholder="max" value="1">
+
+        <label for="Reading time">Reading time:</label>
+        <input type="number" id="rtmin" name="rtmin" min="0" step="1" placeholder="min" value="0">
+        <input type="number" id="rtmax" name="rtmax" min="0" step="1" placeholder="max" value="1">
+
+        <button type="submit" class="submit-btn">Save</button>
+    </form>
+  </div>
+</template>
    <header class="masthead" style="background-image: url('{{url_for('static', filename='assets/img/asciitree.png')}}')">
     <div class="container position-relative px-4 px-lg-5">
                 <div class="row gx-4 gx-lg-5 justify-content-center">
@@ -59,6 +103,54 @@
             <div class="editor-label">
                 <span>Unicode Style</span>
                 <div>
+                    <!--Preference bnt -->
+                    <div class="dropdown" id="dropdown">  
+                        <label class="dropdown-toggle"><strong>Preferences</strong></label>
+                        <div id="list-container">
+                            <!-- Main dropdown content-->
+                            <div id="preference-list">
+                                <code>Saving mulitple preferences coming soon...</code>
+                            </div>
+                            <div id="add-preference-button">
+                                <button class="add-preference">+</button>
+                            </div>
+                        </div>
+                        <!-- Add Submenus -->
+                        <div class="dropdown-content submenu" id="submenu-add">
+                            <button class="back-btn">⬅ Back</button>
+                            <p><strong>Add</strong></p>
+                            <form id="add-form" class="add-form">
+                                <label for="pname">Name:</label>
+                                <input type="text" id="pname" name="pname" placeholder="" value="">
+                                <label for="ccmin">Characters:</label>
+                                <input type="number" id="ccmin" name="ccmin" min="0" step="1" placeholder="min" value="0">
+                                <input type="number" id="ccmax" name="ccmax" min="0" step="1" placeholder="max" value="1">
+
+                                <label for="optionA2">Words:</label>
+                                <input type="number" id="wcmin" name="wcmin" min="0" step="1" placeholder="min" value="0">
+                                <input type="number" id="wcmax" name="wcmax" min="0" step="1" placeholder="max" value="1">
+
+                                <label for="optionA2">Spaces:</label>
+                                <input type="number" id="scmin" name="scmin" min="0" step="1" placeholder="min" value="0">
+                                <input type="number" id="scmax" name="smax" min="0" step="1" placeholder="max" value="1">
+
+                                <label for="optionA2">Sentences:</label>
+                                <input type="number" id="stcmin" name="stcmin" min="0" step="1" placeholder="min" value="0">
+                                <input type="number" id="stcmax" name="stcmax" min="0" step="1" placeholder="max" value="1">
+
+                                <label for="optionA2">Paragraphs:</label>
+                                <input type="number" id="pcmin" name="pcmin" min="0" step="1" placeholder="min" value="0">
+                                <input type="number" id="pcmax" name="pcmax" min="0" step="1" placeholder="max" value="1">
+
+                                <label for="optionA2">Reading time:</label>
+                                <input type="number" id="rtmin" name="rtmin" min="0" step="1" placeholder="min" value="0">
+                                <input type="number" id="rtmax" name="rtmax" min="0" step="1" placeholder="max" value="1">
+
+                                <button type="submit" class="submit-btn">Save</button>
+                            </form>
+                        </div>
+                       
+                    </div>
                     <button class="copy-btn" id="copy-btn" data-target="unicodeEditor">Copy</button>
                     <button class="copy-btn" id="paste-btn" data-target="unicodeEditor">Paste</button>
                 </div>

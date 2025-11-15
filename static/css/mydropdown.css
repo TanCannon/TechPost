@@ -1,0 +1,72 @@
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+.dropdown-toggle{
+  cursor: pointer;
+}
+#list-container{
+  display: none;
+  position: absolute;
+  top: 30px;
+  background: #f9f9f9;
+  min-width: 220px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 8px;
+  z-index: 10;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+#preference-list{
+  margin-bottom: 10px;
+}
+/* Common dropdown styles */
+.dropdown-content {
+  /* display: none; */
+  position: absolute;
+  top: 30px;
+  background: #f9f9f9;
+  min-width: 220px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 8px;
+  z-index: 10;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+/* Items layout */
+.border-bottom{
+    border-bottom: 1px solid #a0a2ad; 
+}
+.list-items {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+}
+
+.list-items p {
+  margin: 0;
+}
+
+button {
+  cursor: pointer;
+  padding: 3px 6px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #eee;
+}
+
+/* Submenu */
+.submenu {
+  display: none;
+}
+
+.back-btn {
+  display: inline-block;
+  margin-bottom: 8px;
+  background: #ddd;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
