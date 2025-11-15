@@ -41,11 +41,18 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 6px 0;
+  padding: 6px 6px;
 }
 
 .list-items p {
   margin: 0;
+}
+
+.list-items .item-name{
+  cursor: pointer;
+}
+.list-items:hover .item-name{
+  text-decoration: underline;
 }
 
 button {

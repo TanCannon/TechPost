@@ -7,6 +7,9 @@ const submenus = document.querySelectorAll('.submenu');
 const dropdown = document.querySelector('.dropdown');
 const toggleBtn = dropdown.querySelector('.dropdown-toggle'); // The “Mouse over me!” text
 
+//Track current preference
+let curPreference = JSON.parse(localStorage.getItem("selectedPreference")) || null;
+
 // Track currently open submenu
 let activeSubmenu = null;
 
@@ -82,46 +85,6 @@ document.addEventListener('click', (e) => {
     }
   }
 });
-
-// let menuData = JSON.parse(localStorage.getItem("menuData")) || [];
-// let menuData = {
-//   1:{
-//     "id": 1,
-//     "name": "Fruits",
-//     "children": [
-//       { "id": 11, "ccmin": 0 },
-//       { "id": 12, "ccmax": 100 },
-//       { "id": 13, "wcmin": 0 },
-//       { "id": 14, "wcmax": null },
-//       { "id": 15, "scmin": 0 },
-//       { "id": 16, "scmax": null },
-//       { "id": 17, "stcmin": 0 },
-//       { "id": 18, "stcmax": null },
-//       { "id": 19, "pcmin": 0 },
-//       { "id": 110, "pcmax": null },
-//       { "id": 111, "rtmin": 0 },
-//       { "id": 112, "rtmax": null}
-//     ]
-//   },
-//   2:{
-//     "id": 2,
-//     "name": "Vegetables",
-//     "children": [
-//       { "id": 11, "ccmin": 0 },
-//       { "id": 12, "ccmax": null },
-//       { "id": 13, "wcmin": 0 },
-//       { "id": 14, "wcmax": null },
-//       { "id": 15, "scmin": 0 },
-//       { "id": 16, "scmax": null },
-//       { "id": 17, "stcmin": 0 },
-//       { "id": 18, "stcmax": null },
-//       { "id": 19, "pcmin": 0 },
-//       { "id": 110, "pcmax": null },
-//       { "id": 111, "rtmin": 0 },
-//       { "id": 112, "rtmax": null}
-//     ]
-//   }
-// };
 
 //load data from localStorage
 let menuData = JSON.parse(localStorage.getItem("menuData")) || {};
@@ -226,6 +189,21 @@ function delPreferenceBtn(id, label){
   alert(`Preference ${label} is deleted.`);
   renderMenu(menuData);
 }
+//===============================================
+// PURPOSE: set preference item for validation
+//===============================================
+function setPreferenceItem(id, label){
+  curPreference = id;
+  localStorage.setItem("selectedPreference", id);
+  //create feedback
+  //s1: clear the bg color from other prf. items
+  document.querySelectorAll(".list-items").forEach(item =>{
+    item.style.backgroundColor = "white";
+  });
+  document.getElementById(`prf${id}`).style.backgroundColor = "#c6c5d2";
+  // console.log(id, label);
+  alert(`Selected preference: ${label}`);
+}
 //========================================================
 // COMPONENT: Renders the menu  dynamically
 // DESCRIPTION: renderMenu() pushes each parent and its children iteratively into renderMenuItems() to render it as follows:
@@ -272,11 +250,15 @@ function renderMenuItem(id, label, childData){
   const div = clone.querySelector("div");
   const p = clone.querySelector(".item-name");
   
-
   // Set dynamic values
-  div.id = id;
+  div.id = `prf${id}`;
   p.textContent = label;
   p.dataset.type = label;
+
+  //attach event to list item
+  p.addEventListener('click', (e) =>{
+    setPreferenceItem(id, label);
+  });
 
   //attach events to the buttons
   const delBtn = clone.querySelector(".delete-preference");
@@ -336,3 +318,7 @@ function renderMenuItem(id, label, childData){
 
 //load data and render menu
 renderMenu(menuData);
+//load and highlight the selected preference
+if (localStorage.getItem("selectedPreference")){
+  document.getElementById(`prf${localStorage.getItem("selectedPreference")}`).style.backgroundColor = "#c6c5d2";
+}
