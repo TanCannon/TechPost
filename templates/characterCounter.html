@@ -25,7 +25,7 @@
 {% block twitter_image %}{{ url_for('static',filename=fname,  _external=True)}}{% endblock %}
 
 {% block page_style %}
-{{url_for('static', filename='css/generateZip.css')}}
+{{url_for('static', filename='css/characterCounter.css')}}
 {% endblock page_style %}
 
 {%block add_headers%} 
@@ -102,7 +102,8 @@
         <div class="editor">
             <div class="editor-label">
                 <span>WorkSpace</span>
-                <div>
+                <!-- control buttons -->
+                <div id="control-btn" class="d-flex align-items-center column-gap-3">
                     <!--Preference bnt -->
                     <div class="dropdown" id="dropdown">  
                         <label class="dropdown-toggle"><strong>Preferences</strong></label>
@@ -150,6 +151,12 @@
                             </form>
                         </div>   
                     </div>
+                    <!--Toggle Preferences button-->
+                    <label for="toggle-preference" class="switch" >
+                        <input type="checkbox" name="toggle-preference" id="toggle-preference" class="chk">
+                        <span class="slider"></span>
+                    </label>
+                    <!--copy and paste buttons-->
                     <button class="copy-btn" id="copy-btn" data-target="unicodeEditor">Copy</button>
                     <button class="copy-btn" id="paste-btn" data-target="unicodeEditor">Paste</button>
                 </div>
@@ -157,6 +164,7 @@
             <div id="unicodeEditor" class="autoresizeeditor"></div>
         </div>
     </div> 
+    <!--show live metices-->
     <div class="center-content-h">
         <div id="metrics-list">
             <div class="btn btn-primary mt-2">Characters: <span id="charVal">0</span></div>
@@ -167,6 +175,7 @@
             <div class="btn btn-primary mt-2">Reading Time: <span id="readingVal">0 sec</span></div>
         </div>   
     </div>
+    <!--user guide-->
     <div class="center-content-h" id="center-user-guide">
         <section id="quick-start" class="editor-help">
             <p class="blurb">
@@ -219,7 +228,9 @@
             timer = setTimeout(() => fn.apply(this, args), delay);
         };
     }
-
+    function inRange(value, min, max) {
+        return value >= min && value <= max;
+    }
     function analyzeText(text) {
         // Trim just for clean calculations
         const trimmed = text.trim();
@@ -242,8 +253,8 @@
 
         return {
             characters,
-            spaces,
             words,
+            spaces,
             sentences,
             paragraphs,
             readingTime
@@ -265,9 +276,32 @@
 
         const handleUnicode = debounce((instance, changeObj) => {
             const stats = analyzeText(unicodeBox.getValue());
-            //console.log(stats);
-            //validate the text according to the preferences
+            const liveMetrices = document.querySelectorAll("#metrics-list > div");
+            //reset liveMetrices styles.
+            liveMetrices.forEach(item =>{
+                item.style.backgroundColor = "#0085A1";
+            });
             
+            //validate the text according to the preferences (if toggle preference button is ON)
+            if (document.getElementById("toggle-preference").checked){
+                //console.log("Preference is On.");
+                if (localStorage.getItem("selectedPreference")){ //preference is set!?
+                    //bring values from the selectedPreference.
+                    const menuData = JSON.parse(localStorage.getItem("menuData"));
+                    const selectedPreferenceId = localStorage.getItem("selectedPreference");
+                    const ruleSet = menuData[selectedPreferenceId].children; //it is a array
+                    //then validate 
+                    const formFields = [["ccmin", "ccmax"], ["wcmin", "wcmax"], ["scmin", "scmax"], ["stcmin", "stcmax"], ["pcmin", "pcmax"], ["rtmin", "rtmax"]];
+                    
+                    const curStats = Object.values(stats);
+                    //console.log(values[0]);
+                    formFields.forEach((item, index) =>{
+                        if (!inRange(curStats[index], Number(ruleSet[index + index][item[0]]), Number(ruleSet[index + index + 1][item[1]]))){
+                            liveMetrices[index].style.backgroundColor = "red";
+                        }
+                    });
+                }
+            }
             //show metices
             document.getElementById("charVal").textContent = stats.characters;
             document.getElementById("spaceVal").textContent = stats.spaces;
