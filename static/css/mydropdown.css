@@ -1,9 +1,14 @@
+.noclick {
+  pointer-events: none;
+}
 .dropdown {
   position: relative;
   display: inline-block;
 }
 .dropdown-toggle{
+  color: gray;
   cursor: pointer;
+  margin-left: 1rem;
 }
 #list-container{
   display: none;
@@ -84,7 +89,6 @@ button {
 /* From Uiverse.io by Praashoo7 */ 
 /* The switch - the box around the slider */
 .switch {
-  font-size: 17px;
   position: relative;
   display: inline-block;
   width: 1.2em;
@@ -112,6 +116,7 @@ button {
 }
 
 .slider:before {
+  border: solid 1px black;
   position: absolute;
   content: "";
   height: .5em;
@@ -130,6 +135,7 @@ button {
 }
 
 .slider:after {
+
   background: linear-gradient(transparent 50%, rgba(255, 255, 255, 0.15) 0) 0 50% / 50% 100%,
 		repeating-linear-gradient(90deg,rgb(255, 255, 255) 0,rgb(255, 255, 255),rgb(255, 255, 255) 20%,rgb(255, 255, 255) 20%,rgb(255, 255, 255) 40%) 0 50% / 50% 100%,
 		radial-gradient(circle at 50% 50%,rgb(255, 255, 255) 25%, transparent 26%);
@@ -162,4 +168,10 @@ button {
 
 .chk:checked + .slider:after {
   transform: rotateZ(90deg) rotateY(180deg) translateY(0.45em) translateX(-1.4em);
+}
+
+@media (max-width: 426px) {
+  .slider {
+   left: -4px /* small screens */
+  }
 }

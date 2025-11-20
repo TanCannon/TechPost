@@ -1005,6 +1005,7 @@ header.masthead .post-heading .meta a {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 6px;
+  flex-wrap: wrap;
 }
 .editor-label span {
   font-weight: bold;
@@ -1058,7 +1059,12 @@ button.copy-btn:active {
   background-color: #006a81;
   border-color: #006479;
 }
-
+#metrics-list{
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
 #center-user-guide{
   flex-direction: column;
   text-align: justify;
@@ -1137,4 +1143,9 @@ code {
     font-size: 14px;
     height: 50vh !important;
   } 
+}
+@media (max-width: 768px) {
+  .editor-label {
+    justify-content: space-around; /* small screens */
+  }
 }

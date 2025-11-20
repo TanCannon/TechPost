@@ -101,12 +101,12 @@
     <div id="dualeditor">
         <div class="editor">
             <div class="editor-label">
-                <span>WorkSpace</span>
+                <h3>WorkSpace</h3>
                 <!-- control buttons -->
                 <div id="control-btn" class="d-flex align-items-center column-gap-3">
                     <!--Preference bnt -->
-                    <div class="dropdown" id="dropdown">  
-                        <label class="dropdown-toggle"><strong>Preferences</strong></label>
+                    <div class="dropdown editor-label" id="dropdown">  
+                        <span id="dropdown-toggle" class="dropdown-toggle noclick"><strong>Preferences</strong></span>
                         <div id="list-container">
                             <!-- Main dropdown content-->
                             <div id="preference-list">
@@ -152,10 +152,12 @@
                         </div>   
                     </div>
                     <!--Toggle Preferences button-->
-                    <label for="toggle-preference" class="switch" >
-                        <input type="checkbox" name="toggle-preference" id="toggle-preference" class="chk">
-                        <span class="slider"></span>
-                    </label>
+                    <div>
+                        <label for="toggle-preference" class="switch text-responsive">
+                            <input type="checkbox" name="toggle-preference" id="toggle-preference" class="chk">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
                     <!--copy and paste buttons-->
                     <button class="copy-btn" id="copy-btn" data-target="unicodeEditor">Copy</button>
                     <button class="copy-btn" id="paste-btn" data-target="unicodeEditor">Paste</button>
@@ -166,7 +168,7 @@
     </div> 
     <!--show live metices-->
     <div class="center-content-h">
-        <div id="metrics-list">
+        <div id="metrics-list" class="px-4">
             <div class="btn btn-primary mt-2">Characters: <span id="charVal">0</span></div>
             <div class="btn btn-primary mt-2">Spaces: <span id="spaceVal">0</span></div>
             <div class="btn btn-primary mt-2">Words: <span id="wordVal">0</span></div>
@@ -247,9 +249,10 @@
 
         // Average reading speed: ~200 words per minute
         const readingTimeMinutes = words / 200;
-        const readingTime = readingTimeMinutes < 1
-            ? `${Math.ceil(readingTimeMinutes * 60)} sec`
-            : `${readingTimeMinutes.toFixed(1)} min`;
+        const readingTime = Math.ceil(readingTimeMinutes * 60); //in seconds
+       // const readingTime = readingTimeMinutes < 1
+          //  ? `${Math.ceil(readingTimeMinutes * 60)} sec`
+           // : `${readingTimeMinutes.toFixed(1)} min`;
 
         return {
             characters,
@@ -272,7 +275,14 @@
             value: "",
             placeholder: "├─, └─, │ style tree..."
         });
-
+        //the toggle preference button instance
+        //SET INITIAL STATES
+        const dropdownToggleBtn = document.getElementById("dropdown-toggle");
+        if (document.getElementById("toggle-preference").checked){
+            dropdownToggleBtn.classList.remove("noclick");
+            //set prftogglebtn to active
+            dropdownToggleBtn.style.color = "black";
+        }
 
         const handleUnicode = debounce((instance, changeObj) => {
             const stats = analyzeText(unicodeBox.getValue());
@@ -284,6 +294,7 @@
             
             //validate the text according to the preferences (if toggle preference button is ON)
             if (document.getElementById("toggle-preference").checked){
+
                 //console.log("Preference is On.");
                 if (localStorage.getItem("selectedPreference")){ //preference is set!?
                     //bring values from the selectedPreference.
@@ -308,9 +319,8 @@
             document.getElementById("wordVal").textContent = stats.words;
             document.getElementById("sentenceVal").textContent = stats.sentences;
             document.getElementById("paragraphVal").textContent = stats.paragraphs;
-            document.getElementById("readingVal").textContent = stats.readingTime;
+            document.getElementById("readingVal").textContent = `${stats.readingTime} sec`;
         }, 300);
-
 
         unicodeBox.on("change", handleUnicode);
 
@@ -318,7 +328,6 @@
         unicodeBox.on("focus", () => {
         unicodeBox.getWrapperElement().classList.add("cm-editor-active");
         });
-
 
         // Remove highlight if both lose focus (optional)
         [unicodeBox].forEach(editor => {
@@ -343,6 +352,11 @@
                 alert("Failed to copy");    
             }
         }
+        //preference toggle button
+        document.getElementById("toggle-preference").addEventListener('change', ()=>{
+            dropdownToggleBtn.style.color = (dropdownToggleBtn.style.color === "black") ? "grey" : "black";
+            dropdownToggleBtn.classList.toggle("noclick");
+        });
 
         //copy buttons
         document.getElementById("copy-btn").addEventListener("click", function () {
