@@ -225,7 +225,7 @@ function renderMenu(data){
   //msg to show inside preference-list when its no preferences exist.
   if (Object.keys(data).length == 0) {
     const msg = document.createElement("code");
-    msg.innerText = "Add preference please.";
+    msg.innerText = "Please add profiles.";
     container.appendChild(msg);
   }
   

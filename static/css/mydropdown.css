@@ -9,6 +9,7 @@
   color: gray;
   cursor: pointer;
   margin-left: 1rem;
+  text-decoration: underline;
 }
 #list-container{
   display: none;
@@ -174,4 +175,12 @@ button {
   .slider {
    left: -4px /* small screens */
   }
+}
+
+.icon {
+  filter: brightness(0) invert(1);
+  width: 1.1rem;    /* adjust size here */
+  height: 1.1rem;
+  display: inline-block;
+  pointer-events: none; /* so clicking hits the button, not the image */
 }
