@@ -455,7 +455,10 @@ def generateZip():
 #curretly one tools is avalable so im redirecting
 @app.route("/tools")
 def tools():
-    return redirect(url_for("ascii-tree-to-zip"))
+    # return redirect(url_for("ascii-tree-to-zip"))
+    return render_template("tools.html", params=params)
+# def tool_page(tool_slug):
+#     return render_template("tools.html", slug=tool_slug)
 
 #route to legal pages /privacy, /terms, /disclaimer and /faq
 @app.route("/privacy", methods=["GET"])
